@@ -565,8 +565,14 @@ public class ConfigurationAppGUI extends JFrame
 
     //Added the swap button functionality to swap existing set of audio files with the next set.
     public void swap(String[] audioFiles) {
-        int index = audioListModel.indexOf(finalListModel.lastElement());
+        int index;
         int j = audioListModel.indexOf(audioListModel.lastElement());
+
+        if(finalListModel.isEmpty())
+            index = -1;
+        else
+            index = audioListModel.indexOf(finalListModel.lastElement());
+
         int length = order.getItemCount();
         //initialListModel.removeAllElements();
         finalListModel.removeAllElements();

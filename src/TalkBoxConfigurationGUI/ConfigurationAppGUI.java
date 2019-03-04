@@ -13,6 +13,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -58,6 +62,8 @@ public class ConfigurationAppGUI extends JFrame
     JButton removeNewBtn;
     JButton removeFinalBtn;
     JButton launchSimApp;
+    JScrollPane rightScrollPane;
+    JScrollPane leftScrollPane;
     SimulatorApp myFrame;
     File sounds = new File(fileName);
 
@@ -72,17 +78,22 @@ public class ConfigurationAppGUI extends JFrame
         super("TalkBox");
         player = new SoundEngine();
         String[] audioFileNames = findFiles(AUDIO_DIR, null);
+        initialListModel = new DefaultListModel();
+        initialList = new JList(initialListModel);
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
             if(sounds.exists()) {
                 //Deserialization
                 SaveData data = (SaveData) ResourceManager.load(fileName);
                 //Populating InitialList from TalkBoxConfig.save file.
-                initialListModel = new DefaultListModel();
-                initialList = new JList(initialListModel);
 
-                for (int i = 0; i < data.finalList.getModel().getSize(); i++)
+                finalListModel = new DefaultListModel();
+                finalList = new JList(finalListModel);
+
+                for (int i = 0; i < data.finalList.getModel().getSize(); i++) {
                     initialListModel.addElement(data.finalList.getModel().getElementAt(i));
+                    finalListModel.addElement(data.finalList.getModel().getElementAt(i));
+                }
 
                 //Populating Order ComboBox from TalkBoxConfig.save file.
                 orderModel = new DefaultComboBoxModel();
@@ -90,6 +101,10 @@ public class ConfigurationAppGUI extends JFrame
                 for (int i = 0; i < data.order.getModel().getSize(); i++)
                     orderModel.addElement(data.order.getModel().getElementAt(i));
             }
+//            else {
+//                initialListModel = new DefaultListModel();
+//                initialList = new JList(initialListModel);
+//            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
@@ -102,13 +117,6 @@ public class ConfigurationAppGUI extends JFrame
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
         makeFrame(audioFileNames);
-
-        //--Testing interface methods.
-//        this.getNumberOfAudioButtons();
-//        this.getNumberOfAudioSets();
-//        this.getTotalNumberOfButtons();
-//        this.getRelativePathToAudioFiles();
-//        this.getAudioFileNames();
     }
 
     /**
@@ -227,7 +235,7 @@ public class ConfigurationAppGUI extends JFrame
 
         JPanel contentPane = (JPanel) getContentPane();
         contentPane.setBorder(new EmptyBorder(6, 10, 10, 10));
-        contentPane.setPreferredSize(new Dimension(920, 500));
+        contentPane.setPreferredSize(new Dimension(780, 500));
         makeMenuBar();
 
         // Specify the layout manager with nice spacing
@@ -280,28 +288,7 @@ public class ConfigurationAppGUI extends JFrame
                 orderPanel.add(orderLabel);
                 orderPanel.add(order);
 
-                JLabel initialLabel = new JLabel("Initial List: ");
-                initialLabel.setFont(font);
-                orderPanel.add(initialLabel);
-
-                //Add button to add new button in simulator app.
-                addNewBtn = new JButton();
-                ImageIcon addNewIcn = new ImageIcon("Icons/Add.png");
-                setButtonIcon(addNewBtn, addNewIcn);
-                addNewBtn.setToolTipText("Add New Button");
-                addNewBtn.addActionListener(e -> addInitialBtn(audioFiles));
-                orderPanel.add(addNewBtn);
-
-                //Add remove button to new remove the last button created in simulator app.
-                removeNewBtn = new JButton();
-                ImageIcon removeIcn = new ImageIcon("Icons/Remove.png");
-                setButtonIcon(removeNewBtn, removeIcn);
-                removeNewBtn.setToolTipText("Remove from Initial List");
-                removeNewBtn.addActionListener(e -> removeInitialBtn());
-                orderPanel.add(removeNewBtn);
-                //orderPanel.setBackground(Color.BLACK);
-
-                JLabel finalLabel = new JLabel("Final List: ");
+                JLabel finalLabel = new JLabel("Add and remove Buttons: ");
                 finalLabel.setFont(font);
                 orderPanel.add(finalLabel);
 
@@ -310,7 +297,8 @@ public class ConfigurationAppGUI extends JFrame
                 ImageIcon addFinalIcn = new ImageIcon("Icons/Add.png");
                 setButtonIcon(addFinalBtn, addFinalIcn);
                 addFinalBtn.setToolTipText("Add to Final List");
-                addFinalBtn.addActionListener(e -> addFinalBtn());
+                addFinalBtn.addActionListener(e -> addFinalBtn(audioFiles));
+                addFinalBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(addFinalBtn);
 
                 //Add remove button to new remove the last button created in simulator app.
@@ -319,6 +307,7 @@ public class ConfigurationAppGUI extends JFrame
                 setButtonIcon(removeFinalBtn, removeFinalIcn);
                 removeFinalBtn.setToolTipText("Remove from Final List");
                 removeFinalBtn.addActionListener(e -> removeFinalBtn());
+                removeFinalBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(removeFinalBtn);
 
                 //Add Record Button to record new audio files.
@@ -326,12 +315,14 @@ public class ConfigurationAppGUI extends JFrame
 //                ImageIcon recordIcn = new ImageIcon("Icons/Record.png");
 //                setButtonIcon(recordBtn, recordIcn);
 //                recordBtn.setToolTipText("Record");
+//                recordBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //                recordBtn.addActionListener(e -> {
 //                    recordBtn.setVisible(false);
 //                    ImageIcon stopRcdIcn = new ImageIcon("Icons/Stop.png");
 //                    JButton stopRcdBtn = new JButton();
 //                    setButtonIcon(stopRcdBtn, stopRcdIcn);
 //                    stopRcdBtn.setToolTipText("Stop Recording");
+//                    stopRcdBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //                    stopRcdBtn.addActionListener(e1 -> {
 //                        stopRcdBtn.setVisible(false);
 //                        recordBtn.setVisible(true);
@@ -356,36 +347,48 @@ public class ConfigurationAppGUI extends JFrame
                         JOptionPane.showMessageDialog(null, "Please try to save before launching simulator app");
                     }
                 });
+                launchSimApp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(launchSimApp);
             }
             rightPane.setLayout(new BorderLayout(8, 8));
             rightPane.add(orderPanel, BorderLayout.CENTER);
+//            initialListModel = new DefaultListModel();
+//            initialList = new JList(initialListModel);
             // Create the scrolled list for Initial List
-            if(initialListModel == null)
-            {
-                initialListModel = new DefaultListModel();
-                initialList = new JList(initialListModel);
-                for (int i = 0; i < order.getItemCount(); i++)
-                    initialListModel.addElement(audioFiles[i]);
-            }
+//            if(initialListModel == null)
+//            {
+//                initialListModel = new DefaultListModel();
+//                initialList = new JList(initialListModel);
+//                for (int i = 0; i < order.getItemCount(); i++)
+//                    initialListModel.addElement(audioFiles[i]);
+//            }
             setBackground(initialList);
             initialList.setPrototypeCellValue("XXXXXXXXXXXXXXXXXXX");
-            JScrollPane leftScrollPane = new JScrollPane(initialList);
-            leftScrollPane.setColumnHeaderView(new JLabel("Initial List : What You Had"));
+            leftScrollPane = new JScrollPane(initialList);
+            leftScrollPane.setColumnHeaderView(new JLabel("What You Have Now"));
             rightPane.add(leftScrollPane, BorderLayout.WEST);
+            if(sounds.exists())
+                leftScrollPane.setVisible(true);
+            else
+                leftScrollPane.setVisible(false);
 
-            //Create the scrolled list for Updated List
-            finalListModel = new DefaultListModel();
-            finalList = new JList(finalListModel);
+            //Create the scrolled list for Final List
+            if(finalListModel == null)
+            {
+                finalListModel = new DefaultListModel();
+                finalList = new JList(finalListModel);
+                for (int i = 0; i < order.getItemCount(); i++)
+                    finalListModel.addElement(audioFiles[i]);
+            }
             setBackground(finalList);
             finalList.setPrototypeCellValue("XXXXXXXXXXXXXXXXXXXX");
-            JScrollPane rightScrollPane = new JScrollPane(finalList);
+            rightScrollPane = new JScrollPane(finalList);
 
             //Add all elements from initial list to final list when app is started.
-            for (int i=0; i<initialListModel.getSize(); i++)
-                finalListModel.addElement(initialListModel.elementAt(i));
+//            for (int i=0; i<initialListModel.getSize(); i++)
+//                finalListModel.addElement(initialListModel.elementAt(i));
 
-            rightScrollPane.setColumnHeaderView(new JLabel("Final List : What You Want"));
+            rightScrollPane.setColumnHeaderView(new JLabel("Changes you Want"));
             rightPane.add(rightScrollPane, BorderLayout.EAST);
             //rightPane.setBackground(Color.BLACK);
         }
@@ -432,6 +435,7 @@ public class ConfigurationAppGUI extends JFrame
             playBtn.setToolTipText("Play");
             setButtonIcon(playBtn, playIcn);
             playBtn.addActionListener(e -> play());
+            playBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(playBtn);
 
             stopBtn = new JButton();
@@ -439,6 +443,7 @@ public class ConfigurationAppGUI extends JFrame
             setButtonIcon(stopBtn, stopIcn);
             stopBtn.setToolTipText("Stop");
             stopBtn.addActionListener(e -> stop());
+            stopBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(stopBtn);
 
             pauseBtn = new JButton();
@@ -446,6 +451,7 @@ public class ConfigurationAppGUI extends JFrame
             setButtonIcon(pauseBtn, pauseIcn);
             pauseBtn.setToolTipText("Pause");
             pauseBtn.addActionListener(e -> pause());
+            pauseBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(pauseBtn);
 
             resumeBtn = new JButton();
@@ -453,6 +459,7 @@ public class ConfigurationAppGUI extends JFrame
             setButtonIcon(resumeBtn, resumeIcn);
             resumeBtn.setToolTipText("Resume");
             resumeBtn.addActionListener(e -> resume());
+            resumeBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(resumeBtn);
 
             resetBtn = new JButton();
@@ -460,6 +467,7 @@ public class ConfigurationAppGUI extends JFrame
             setButtonIcon(resetBtn, resetIcn);
             resetBtn.setToolTipText("Reset");
             resetBtn.addActionListener(e -> reset(audioFiles));
+            resetBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(resetBtn);
 
             swapBtn = new JButton();
@@ -467,6 +475,7 @@ public class ConfigurationAppGUI extends JFrame
             setButtonIcon(swapBtn, swapIcn);
             swapBtn.setToolTipText("Swap");
             swapBtn.addActionListener(e -> swap(audioFiles));
+            swapBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(swapBtn);
 
             saveChangesBtn = new JButton();
@@ -474,6 +483,7 @@ public class ConfigurationAppGUI extends JFrame
             setButtonIcon(saveChangesBtn, saveChangesIcn);
             saveChangesBtn.setToolTipText("Save Changes");
             saveChangesBtn.addActionListener(e -> saveChanges());
+            saveChangesBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(saveChangesBtn);
             //toolbar.setBackground(Color.BLACK);
         }
@@ -488,6 +498,9 @@ public class ConfigurationAppGUI extends JFrame
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(d.width/2 - getWidth()/2, d.height/2 - getHeight()/2);
         setVisible(true);
+        if(!sounds.exists()) {
+            tutorial();
+        }
     }
 
     //Create the main frame's menu bar.
@@ -505,6 +518,16 @@ public class ConfigurationAppGUI extends JFrame
         menu = new JMenu("File");
         menubar.add(menu);
 
+        item = new JMenuItem("Add a new Audio File");
+        item.addActionListener(e -> {
+            try {
+                copyFileUsingStream(pickFile(), sounds);
+            }
+            catch (Exception el) {
+                JOptionPane.showMessageDialog(null, el.getMessage());
+            }});
+        menu.add(item);
+
         item = new JMenuItem("Quit");
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, SHORTCUT_MASK));
         item.addActionListener(e -> quit());
@@ -514,10 +537,41 @@ public class ConfigurationAppGUI extends JFrame
         menu = new JMenu("Help");
         menubar.add(menu);
 
+        item = new JMenuItem("Tutorial");
+        item.addActionListener(e -> tutorial());
+        menu.add(item);
+
         item = new JMenuItem("About TalkBox...");
         item.addActionListener(e -> showAbout());
         menu.add(item);
     }
+
+    private File pickFile()
+    {
+        File source = null;
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            source = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + source.getAbsolutePath());
+        }
+        return source;
+    }
+
+    private static void copyFileUsingStream(File source, File dest) throws IOException {
+        FileChannel inputChannel = null;
+        FileChannel outputChannel = null;
+        try {
+            inputChannel = new FileInputStream(source).getChannel();
+            outputChannel = new FileOutputStream(dest).getChannel();
+            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+        } finally {
+            inputChannel.close();
+            outputChannel.close();
+        }
+    }
+
 
     //Background for the lists that will be used in the GUI
     private void setBackground(JList list) {
@@ -528,21 +582,41 @@ public class ConfigurationAppGUI extends JFrame
     }
 
     //Added the edit button functionality to add audio files to final list.
-    private void addFinalBtn() {
+    private void addFinalBtn(String[] audioFiles) {
         if(audioList.isSelectionEmpty()) {
             JOptionPane.showMessageDialog(null, "Please select an audio from audio list");
         }
         else {
+            int reply = JOptionPane.showConfirmDialog(null, "You can select the position " +
+                            "from the button number menu if already selected, Select No." +
+                            "\n Or you want to add it at the last if so, Select Yes.\nTo exit Select Cancel.",
+                    "Add Button.", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             String filename = (String)audioList.getSelectedValue();
-            if (finalListModel.size() < order.getItemCount())
-                if(finalListModel.size() < order.getSelectedIndex())
-                    JOptionPane.showMessageDialog(null, "Sorry, try to pick the previous buttons first");
+            if(orderModel.getSize() < audioFiles.length) {
+                if (finalListModel.contains(filename))
+                    JOptionPane.showMessageDialog(null, "Sorry the item already exists.");
                 else {
-                    if (finalListModel.contains(filename))
-                        JOptionPane.showMessageDialog(null, "Sorry the item already exists");
-                    else
-                        finalListModel.add(order.getSelectedIndex(), filename);
+                    if(finalListModel.size() >= orderButtons.length )
+                        orderModel.addElement(order.getItemCount() + 1);
+                    if (reply == JOptionPane.YES_OPTION)
+                        finalListModel.addElement(filename);
+                    else if(reply == JOptionPane.NO_OPTION){
+                        if(order.getSelectedIndex() == -1)
+                            JOptionPane.showMessageDialog(null, "Please make a select a Button Number.");
+                        else
+                            finalListModel.add(order.getSelectedIndex(), filename);
+                    }
                 }
+            }
+//            if (finalListModel.size() < order.getItemCount())
+//                if(finalListModel.size() < order.getSelectedIndex())
+//                    JOptionPane.showMessageDialog(null, "Sorry, try to pick the previous buttons first");
+//                else {
+//                    if (finalListModel.contains(filename))
+//                        JOptionPane.showMessageDialog(null, "Sorry the item already exists");
+//                    else
+//                        finalListModel.add(order.getSelectedIndex(), filename);
+//                }
             else
                 JOptionPane.showMessageDialog(null, "Sorry you have exceeded the " +
                         "number of available buttons, please add a new button, then try.");
@@ -551,16 +625,16 @@ public class ConfigurationAppGUI extends JFrame
 
     private void removeFinalBtn()
     {
-//        if (finalListModel.size() <= orderButtons.length)
-//            JOptionPane.showMessageDialog(null, "Cannot remove more buttons");
-//        else
         if (finalListModel.size() <= 0)
-            JOptionPane.showMessageDialog(null, "Cannot remove more buttons");
+            JOptionPane.showMessageDialog(null, "Cannot remove more buttons.");
         else
             if(finalListModel.size() <= order.getSelectedIndex())
-                JOptionPane.showMessageDialog(null, "Sorry, try to pick the previous buttons first ");
-            else
+                JOptionPane.showMessageDialog(null, "Sorry, try to pick the previous buttons first.");
+            else {
                 finalListModel.remove(order.getSelectedIndex());
+                if(finalListModel.size() >= orderButtons.length )
+                    orderModel.removeElementAt(order.getItemCount() - 1);
+            }
     }
 
     //Added the swap button functionality to swap existing set of audio files with the next set.
@@ -592,63 +666,32 @@ public class ConfigurationAppGUI extends JFrame
     //Added the reset button functionality to reset the initial list and final list
     public void reset(String[] audioFiles) {
         finalListModel.removeAllElements();
-        initialListModel.removeAllElements();
+        //initialListModel.removeAllElements();
         order.removeAllItems();
         for(int i = 1; i <= orderButtons.length; i++) {
-            initialListModel.addElement(audioFiles[i - 1]);
-            //finalListModel.addElement(audioFiles[i - 1]);
+            //initialListModel.addElement(audioFiles[i - 1]);
+            finalListModel.addElement(audioFiles[i - 1]);
             orderModel.addElement(i);
         }
     }
 
-    //Added functionality to add button to add new button to simulator app.
-    private void addInitialBtn(String[] audioFiles) {
-        int index = audioListModel.indexOf(initialListModel.lastElement());
-        if(orderModel.getSize() < audioFiles.length) {
-            orderModel.addElement(order.getItemCount() + 1);
-            if(++index == audioListModel.size()) {
-                index = 0;
-                initialListModel.addElement(audioFiles[index++]);
-            }
-            else
-                initialListModel.addElement(audioFiles[index++]);
-        }
-        else
-            JOptionPane.showMessageDialog(null, "Sorry you can't add more buttons");
-    }
-
-    //Added functionality to remove button to remove the last created button in simulator app.
-    private void removeInitialBtn() {
-        if(order.getItemCount() > orderButtons.length) {
-            if(finalListModel.size() == initialListModel.size() || finalListModel.size() >= initialListModel.size()) {
-                finalListModel.removeElementAt(order.getItemCount() - 1);
-                orderModel.removeElementAt(order.getItemCount() - 1);
-                initialListModel.removeElementAt(order.getItemCount());
-            }
-            else {
-                orderModel.removeElementAt(order.getItemCount() - 1);
-                initialListModel.removeElementAt(order.getItemCount());
-            }
-        }
-        else
-            JOptionPane.showMessageDialog(null, "Sorry, you can't remove more buttons");
-    }
     //Added functionality to save changes.
     public void saveChanges() {
-        if(finalListModel.isEmpty() || finalListModel.size() < initialListModel.size() ) {
-            JOptionPane.showMessageDialog(null, "Sorry, number of buttons should be " +
-                    "equal to the number of files in final list");
+        if(finalListModel.isEmpty() || finalListModel.size() < orderButtons.length) {
+            JOptionPane.showMessageDialog(null, "The list cannot be empty, there should " +
+                    "be at least " + orderButtons.length + " buttons.");
         }
-//        else if((finalListModel.toString()).equals(initialListModel.toString())) {
-//            JOptionPane.showMessageDialog(null, "Sorry, make different selections as " +
-//                    "both final and initial list are same");
-//        }
+        else if((finalListModel.toString()).equals(initialListModel.toString())) {
+            JOptionPane.showMessageDialog(null, "Sorry, make different selections as " +
+                    "both final and initial list are same.");
+        }
         else {
             save();
             initialListModel.removeAllElements();
-            for (int i = 0; i < order.getItemCount(); i++) {
+            for (int i = 0; i < finalListModel.size(); i++) {
                 initialListModel.addElement(finalListModel.getElementAt(i));
             }
+            leftScrollPane.setVisible(true);
         }
     }
 
@@ -676,7 +719,43 @@ public class ConfigurationAppGUI extends JFrame
         {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
+    }
 
+    private  void tutorial()
+    {
+        JOptionPane.showMessageDialog(null, "The Buttons on the top row, can be used" +
+                " to\n1. Play, 2. Stop, 3. Pause, 4. Resume audio files, \n5. Reset the configuration, 6. Swap audio files" +
+                " and 7. Save Changes."
+                , "Tutorial: Top Row", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The 'all formats' drop down menu can be used to display audio " +
+                "files of a specific format in the Audio List."
+                , "Tutorial: Select Audio Format", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The  'Audio Files' List shows all the available " +
+                "audio files.\nYou will choose files from here to test play them and add them to Simulator App."
+                , "Tutorial: Audio List", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The window on the top right shows the name " +
+                "and duration of the audio file you have chosen to play "
+                , "Tutorial: Right Window", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The List on the left (What You Have) will display the " +
+                "current settings\n such as the number of buttons and what audio files are assigned to them in Simulator " +
+                "App.\nYou will have to save some configurations first using the save button to see this List."
+                , "Tutorial: List On The Left", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The List on the bottom right (Changes You Want) " +
+                "will display the changes you have made,\nas soon as you make them, if you are satisfied with the new settings," +
+                "\nyou can save them using save button in the top row."
+                , "Tutorial: List On The Right", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The '+' and 'X' buttons can be used to add or remove " +
+                "audio file buttons from the Simulator App."
+                , "Tutorial: '+' and 'X' Buttons", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "You can select Button Number from Button# drop down " +
+                "to add or remove an audio file on a specific position."
+                ,"Tutorial: Button #", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "The Rocket is used to Shuttle launch the " +
+                "Simulator App, Do remember to save some configurations before launching it."
+                , "Tutorial: Launch Simulator App", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "For more info about buttons, just keep " +
+                "the cursor on the button for 3-5 seconds."
+                , "Tutorial: Info On Buttons", JOptionPane.INFORMATION_MESSAGE);
     }
 
     //Method to start recording
@@ -764,3 +843,59 @@ public class ConfigurationAppGUI extends JFrame
         return audioFileNames;
     }
 }
+
+//After orderModel is added.
+//                JLabel initialLabel = new JLabel("Initial List: ");
+//                initialLabel.setFont(font);
+//                orderPanel.add(initialLabel);
+//
+//                //Add button to add new button in simulator app.
+//                addNewBtn = new JButton();
+//                ImageIcon addNewIcn = new ImageIcon("Icons/Add.png");
+//                setButtonIcon(addNewBtn, addNewIcn);
+//                addNewBtn.setToolTipText("Add New Button");
+//                addNewBtn.addActionListener(e -> addInitialBtn(audioFiles));
+//                addNewBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//                orderPanel.add(addNewBtn);
+//
+//                //Add remove button to new remove the last button created in simulator app.
+//                removeNewBtn = new JButton();
+//                ImageIcon removeIcn = new ImageIcon("Icons/Remove.png");
+//                setButtonIcon(removeNewBtn, removeIcn);
+//                removeNewBtn.setToolTipText("Remove from Initial List");
+//                removeNewBtn.addActionListener(e -> removeInitialBtn());
+//                removeNewBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//                orderPanel.add(removeNewBtn);
+//                  orderPanel.setBackground(Color.BLACK);
+//Added functionality to add button to add new button to simulator app.
+//    private void addInitialBtn(String[] audioFiles) {
+//        int index = audioListModel.indexOf(initialListModel.lastElement());
+//        if(orderModel.getSize() < audioFiles.length) {
+//            orderModel.addElement(order.getItemCount() + 1);
+//            if(++index == audioListModel.size()) {
+//                index = 0;
+//                initialListModel.addElement(audioFiles[index++]);
+//            }
+//            else
+//                initialListModel.addElement(audioFiles[index++]);
+//        }
+//        else
+//            JOptionPane.showMessageDialog(null, "Sorry you can't add more buttons");
+//    }
+
+//Added functionality to remove button to remove the last created button in simulator app.
+//    private void removeInitialBtn() {
+//        if(order.getItemCount() > orderButtons.length) {
+//            if(finalListModel.size() == initialListModel.size() || finalListModel.size() >= initialListModel.size()) {
+//                finalListModel.removeElementAt(order.getItemCount() - 1);
+//                orderModel.removeElementAt(order.getItemCount() - 1);
+//                initialListModel.removeElementAt(order.getItemCount());
+//            }
+//            else {
+//                orderModel.removeElementAt(order.getItemCount() - 1);
+//                initialListModel.removeElementAt(order.getItemCount());
+//            }
+//        }
+//        else
+//            JOptionPane.showMessageDialog(null, "Sorry, you can't remove more buttons");
+//    }

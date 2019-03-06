@@ -22,6 +22,8 @@ import java.util.List;
  * A simple TalkBox. To start, create an instance of this class.
  *
  * The TalkBox can play sound clips in WAV, AU and AIFF formats
+ * 
+ * For Param >> check whatsapp to make changes, processing recording as well for now
  */
 public class ConfigurationAppGUI extends JFrame
         implements ChangeListener, ActionListener, TalkBoxConfiguration
@@ -30,12 +32,13 @@ public class ConfigurationAppGUI extends JFrame
     private static final String AUDIO_DIR = Paths.get(".\\Sounds").toString();
     //private static final String AUDIO_DIR = new File("/Sounds").toURI().relativize(new File("X:/York 2/EECS2311/TalkBox-Pro/Sounds").toURI()).getPath();
     private static final String fileName = "TalkBoxConfig.txt";
+    
 
     JList audioList;
     private JSlider slider;
     private JLabel infoLabel;
     private SoundEngine player;
-    private JList initialList;
+    private JList initialList; //need to remove
     private JList finalList;
     private JComboBox <Integer> order;
     DefaultListModel initialListModel; 
@@ -54,8 +57,8 @@ public class ConfigurationAppGUI extends JFrame
     JButton swapBtn;
     JButton saveChangesBtn;
     JButton addFinalBtn;
-    JButton addNewBtn;
-    JButton removeNewBtn;
+    JButton addNewBtn;//need to remove
+    JButton removeNewBtn; //need to remove
     JButton removeFinalBtn;
     JButton launchSimApp;
     SimulatorApp myFrame;

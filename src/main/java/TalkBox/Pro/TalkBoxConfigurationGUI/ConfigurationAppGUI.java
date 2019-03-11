@@ -1,6 +1,6 @@
-package TalkBoxConfigurationGUI;
+package main.java.TalkBox.Pro.TalkBoxConfigurationGUI;
 
-import simulatorGUI.SimulatorApp;
+import main.java.TalkBox.Pro.simulatorGUI.SimulatorApp;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -8,15 +8,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -31,40 +30,40 @@ public class ConfigurationAppGUI extends JFrame
         implements ChangeListener, ActionListener, TalkBoxConfiguration
 {
     private static final String VERSION = "Version 1.0";
-    private static final String AUDIO_DIR = Paths.get(".\\Sounds").toString();
+    private static final String AUDIO_DIR = Paths.get("Sounds").toString();
     //private static final String AUDIO_DIR = new File("/Sounds").toURI().relativize(new File("X:/York 2/EECS2311/TalkBox-Pro/Sounds").toURI()).getPath();
     private static final String fileName = "TalkBoxConfig.txt";
 
-    JList audioList;
+    public JList audioList;
     private JSlider slider;
     private JLabel infoLabel;
     private SoundEngine player;
     private JList initialList;
     private JList finalList;
     private JComboBox <Integer> order;
-    DefaultListModel initialListModel; 
-    DefaultListModel finalListModel; 
+    public DefaultListModel initialListModel;
+    public DefaultListModel finalListModel;
     private DefaultListModel audioListModel;
     private Integer[] orderButtons = {1, 2, 3};
     private DefaultComboBoxModel orderModel;
     Component[] comp;
     int c = 0;
 
-    JButton playBtn;
-    JButton stopBtn;
-    JButton pauseBtn;
-    JButton resumeBtn;
-    JButton resetBtn;
-    JButton swapBtn;
-    JButton saveChangesBtn;
-    JButton addFinalBtn;
-    JButton addNewBtn;
-    JButton removeNewBtn;
-    JButton removeFinalBtn;
-    JButton launchSimApp;
+    public JButton playBtn;
+    public JButton stopBtn;
+    public JButton pauseBtn;
+    public JButton resumeBtn;
+    public JButton resetBtn;
+    public JButton swapBtn;
+    public JButton saveChangesBtn;
+    public JButton addFinalBtn;
+    public JButton addNewBtn;
+    public JButton removeNewBtn;
+    public JButton removeFinalBtn;
+    public JButton launchSimApp;
     JScrollPane rightScrollPane;
     JScrollPane leftScrollPane;
-    SimulatorApp myFrame;
+    public SimulatorApp myFrame;
     File sounds = new File(fileName);
 
 
@@ -91,8 +90,8 @@ public class ConfigurationAppGUI extends JFrame
                 finalList = new JList(finalListModel);
 
                 for (int i = 0; i < data.finalList.getModel().getSize(); i++) {
-                    initialListModel.addElement(data.finalList.getModel().getElementAt(i));
-                    finalListModel.addElement(data.finalList.getModel().getElementAt(i));
+                    initialListModel.addElement(i + 1 + "." + data.finalList.getModel().getElementAt(i));
+                    finalListModel.addElement(i + 1 + "." + data.finalList.getModel().getElementAt(i));
                 }
 
                 //Populating Order ComboBox from TalkBoxConfig.save file.
@@ -235,7 +234,7 @@ public class ConfigurationAppGUI extends JFrame
 
         JPanel contentPane = (JPanel) getContentPane();
         contentPane.setBorder(new EmptyBorder(6, 10, 10, 10));
-        contentPane.setPreferredSize(new Dimension(780, 500));
+        contentPane.setPreferredSize(new Dimension(800, 500));
         makeMenuBar();
 
         // Specify the layout manager with nice spacing
@@ -378,7 +377,7 @@ public class ConfigurationAppGUI extends JFrame
                 finalListModel = new DefaultListModel();
                 finalList = new JList(finalListModel);
                 for (int i = 0; i < order.getItemCount(); i++)
-                    finalListModel.addElement(audioFiles[i]);
+                    finalListModel.addElement(i + "." + audioFiles[i]);
             }
             setBackground(finalList);
             finalList.setPrototypeCellValue("XXXXXXXXXXXXXXXXXXXX");
@@ -396,7 +395,7 @@ public class ConfigurationAppGUI extends JFrame
 
         // Create the center with image, text label, and slider
         JPanel centerPane = new JPanel(); {
-            centerPane.setLayout(new BorderLayout(8, 8));
+            centerPane.setLayout(new BorderLayout());
 
             JLabel image = new JLabel(new ImageIcon("title.jpg"));
             centerPane.add(image, BorderLayout.NORTH);
@@ -407,7 +406,8 @@ public class ConfigurationAppGUI extends JFrame
             infoLabel.setForeground(new Color(140,171,226));
             centerPane.add(infoLabel, BorderLayout.CENTER);
 
-            slider = new JSlider(0, 100, 0);
+
+            slider = new JSlider();
             TitledBorder border = new TitledBorder("Seek");
             border.setTitleColor(Color.white);
             slider.setBorder(new CompoundBorder(new EmptyBorder(6, 10, 10, 10), border));
@@ -415,14 +415,9 @@ public class ConfigurationAppGUI extends JFrame
             slider.setBackground(Color.BLACK);
             slider.setMajorTickSpacing(25);
             slider.setPaintTicks(true);
-            slider.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    player.setVolume(slider.getValue());
-                }
-            });
+            slider.addChangeListener(e -> player.setVolume(slider.getValue()));
             centerPane.add(slider, BorderLayout.SOUTH);
-            //centerPane.setBackground(Color.BLACK);
+            centerPane.setBackground(Color.BLACK);
         }
         contentPane.add(centerPane, BorderLayout.EAST);
 
@@ -519,9 +514,12 @@ public class ConfigurationAppGUI extends JFrame
         menubar.add(menu);
 
         item = new JMenuItem("Add a new Audio File");
-        item.addActionListener(e -> {
+        item.addActionListener(e ->
+        {
             try {
-                copyFileUsingStream(pickFile(), sounds);
+                File source = pickFile();
+                copyFileUsingStream(source, new File(AUDIO_DIR + "/" + source.getName()));
+                audioListModel.addElement(source.getName());
             }
             catch (Exception el) {
                 JOptionPane.showMessageDialog(null, el.getMessage());
@@ -550,28 +548,25 @@ public class ConfigurationAppGUI extends JFrame
     {
         File source = null;
         JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Audio Files (.wav, .au, .aif)",
+                "wav", "au", "aif");
+        fileChooser.setFileFilter(filter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             source = fileChooser.getSelectedFile();
-            System.out.println("Selected file: " + source.getAbsolutePath());
+            //System.out.println("Selected file: " + source.getName());
         }
         return source;
     }
 
     private static void copyFileUsingStream(File source, File dest) throws IOException {
-        FileChannel inputChannel = null;
-        FileChannel outputChannel = null;
-        try {
-            inputChannel = new FileInputStream(source).getChannel();
-            outputChannel = new FileOutputStream(dest).getChannel();
-            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-        } finally {
-            inputChannel.close();
-            outputChannel.close();
-        }
+        if(!dest.exists())
+            Files.copy(source.toPath(), dest.toPath());
+        else
+            JOptionPane.showMessageDialog(null, "The File already exists");
     }
-
 
     //Background for the lists that will be used in the GUI
     private void setBackground(JList list) {
@@ -587,9 +582,9 @@ public class ConfigurationAppGUI extends JFrame
             JOptionPane.showMessageDialog(null, "Please select an audio from audio list");
         }
         else {
-            int reply = JOptionPane.showConfirmDialog(null, "You can select the position " +
-                            "from the button number menu if already selected, Select No." +
-                            "\n Or you want to add it at the last if so, Select Yes.\nTo exit Select Cancel.",
+            int reply = JOptionPane.showConfirmDialog(null, "1. To add to the last " +
+                            "position.(Select Yes)\n2. To add to the selected button number from it's drop down " +
+                            "menu if you have selected.(Select No)\n3.To Exit.(Select Cancel)",
                     "Add Button.", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
             String filename = (String)audioList.getSelectedValue();
             if(orderModel.getSize() < audioFiles.length) {
@@ -599,12 +594,12 @@ public class ConfigurationAppGUI extends JFrame
                     if(finalListModel.size() >= orderButtons.length )
                         orderModel.addElement(order.getItemCount() + 1);
                     if (reply == JOptionPane.YES_OPTION)
-                        finalListModel.addElement(filename);
+                        finalListModel.addElement(finalListModel.getSize() + 1 + "." + filename);
                     else if(reply == JOptionPane.NO_OPTION){
                         if(order.getSelectedIndex() == -1)
                             JOptionPane.showMessageDialog(null, "Please make a select a Button Number.");
                         else
-                            finalListModel.add(order.getSelectedIndex(), filename);
+                            finalListModel.add(order.getSelectedIndex(),order.getSelectedIndex() + 1 + "." + filename);
                     }
                 }
             }
@@ -655,10 +650,10 @@ public class ConfigurationAppGUI extends JFrame
             if(c > j) {
                 c = 0;
                 index = 0;
-                finalListModel.addElement(audioFiles[c]);
+                finalListModel.addElement(c + "." + audioFiles[c]);
             }
             else {
-                finalListModel.addElement(audioFiles[c]);
+                finalListModel.addElement(c + "." + audioFiles[c]);
             }
         }
     }
@@ -670,7 +665,7 @@ public class ConfigurationAppGUI extends JFrame
         order.removeAllItems();
         for(int i = 1; i <= orderButtons.length; i++) {
             //initialListModel.addElement(audioFiles[i - 1]);
-            finalListModel.addElement(audioFiles[i - 1]);
+            finalListModel.addElement(i + "." + audioFiles[i - 1]);
             orderModel.addElement(i);
         }
     }
@@ -692,6 +687,8 @@ public class ConfigurationAppGUI extends JFrame
                 initialListModel.addElement(finalListModel.getElementAt(i));
             }
             leftScrollPane.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Great!!!\nYour Changes have been made in " +
+                    "Simulator App. \nEnjoy!");
         }
     }
 

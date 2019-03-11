@@ -1,7 +1,7 @@
-package TalkBoxConfigurationGUI;
+package main.java.TalkBox.Pro.TalkBoxConfigurationGUI;
 
-import java.io.*;
 import javax.sound.sampled.*;
+import java.io.File;
 
 /**
  * Class SoundEngine provides functionality to process sound files.

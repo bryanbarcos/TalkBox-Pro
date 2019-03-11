@@ -1,4 +1,4 @@
-package simulatorGUI;
+package main.java.TalkBox.Pro.simulatorGUI;
 
 import javax.sound.sampled.*;
 import java.io.File;

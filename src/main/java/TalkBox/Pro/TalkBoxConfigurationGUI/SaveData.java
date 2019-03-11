@@ -1,7 +1,6 @@
-package TalkBoxConfigurationGUI;
+package main.java.TalkBox.Pro.TalkBoxConfigurationGUI;
 
 import javax.swing.*;
-import java.nio.file.Path;
 
 public class SaveData implements java.io.Serializable {
 

@@ -1,4 +1,4 @@
-package simulatorGUI;
+package main.java.TalkBox.Pro;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -52,5 +52,4 @@ public interface TalkBoxConfiguration extends Serializable {
      * @return A 2-dimensional array of Strings
      */
     public String[][] getAudioFileNames();
-
 }

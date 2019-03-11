@@ -1,4 +1,4 @@
-package TalkBoxConfigurationGUI;
+package main.java.TalkBox.Pro;
 
 import javax.swing.*;
 import java.nio.file.Path;

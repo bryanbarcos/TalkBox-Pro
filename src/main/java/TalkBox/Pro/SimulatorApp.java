@@ -1,10 +1,8 @@
-package simulatorGUI;
-
-import TalkBoxConfigurationGUI.SaveData;
-import TalkBoxConfigurationGUI.TalkBoxConfiguration;
+package main.java.TalkBox.Pro;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.io.File;
 import java.io.ObjectInputStream;
@@ -14,12 +12,12 @@ import java.nio.file.Paths;
 
 public class SimulatorApp extends JFrame
 		implements TalkBoxConfiguration {
-	private static final String VERSION = "Version 1.0";
-	private static final String AUDIO_DIR = Paths.get(".\\Sounds").toString();
-	//private static final String AUDIO_DIR = new File("/Sounds").toURI().relativize(new File("X:/York 2/EECS2311/TalkBox-Pro/Sounds").toURI()).getPath();
-	private static final String fileName = "TalkBoxConfig.txt";
+	public static final String VERSION = "Version 1.0";
+	public static final String AUDIO_DIR = Paths.get("Sounds").toString();
+	//public static final String AUDIO_DIR = new File("/Sounds").toURI().relativize(new File("X:/York 2/EECS2311/TalkBox-Pro/Sounds").toURI()).getPath();
+	public static final String fileName = "TalkBoxConfig.txt";
 
-	private SoundEngine player;
+	public SoundEngine player;
 	public JButton[] audioButtons;
 	public JButton[] swapButtons;
 	JButton defaultChanges;

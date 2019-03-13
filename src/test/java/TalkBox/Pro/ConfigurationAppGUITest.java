@@ -1,4 +1,4 @@
-package TalkBoxConfigurationGUI;
+package test.java.TalkBox.Pro;
 
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +9,8 @@ import javax.swing.DefaultListModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import main.java.TalkBox.Pro.*;
 
 class ConfigurationAppGUITest {
 

@@ -2,18 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32d6af23-4ef2-49aa-a1ad-6f2e7162615a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ConfigurationApp.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/SimulatorApp.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TalkBoxConfigurationGUI/ConfigurationAppGUI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TalkBoxConfigurationGUI/ConfigurationAppGUITest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TalkBoxConfigurationGUI/ResourceManager.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TalkBoxConfigurationGUI/SaveData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TalkBoxConfigurationGUI/SoundEngine.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TalkBoxConfigurationGUI/TalkBoxConfiguration.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulatorGUI/SimulatorApp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulatorGUI/SoundEngine.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/simulatorGUI/TalkBoxConfiguration.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TalkBoxConfig.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/main/java/TalkBox/Pro/TalkBoxConfigurationGUI/ConfigurationAppGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/main/java/TalkBox/Pro/TalkBoxConfigurationGUI/ConfigurationAppGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TalkBox/Pro/TalkBoxConfigurationGUI/ConfigurationAppGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TalkBox/Pro/TalkBoxConfigurationGUI/ConfigurationAppGUI.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -44,8 +36,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/TalkBox/Pro/TalkBoxConfigurationGUI/ConfigurationAppGUI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="613" column="19" lean-forward="true" selection-start-line="613" selection-start-column="19" selection-end-line="613" selection-end-column="19" />
+            <state relative-caret-position="293">
+              <caret line="336" column="21" lean-forward="true" selection-start-line="336" selection-start-column="21" selection-end-line="336" selection-end-column="21" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -257,7 +249,7 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552335050718" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552497162072" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="Arquillian JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../SwingSoundRecorder" />
@@ -357,7 +349,7 @@
       <workItem from="1550537089866" duration="85965000" />
       <workItem from="1551204690503" duration="913000" />
       <workItem from="1551241121045" duration="19606000" />
-      <workItem from="1551483491141" duration="21899000" />
+      <workItem from="1551483491141" duration="42542000" />
     </task>
     <servers />
   </component>
@@ -379,7 +371,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="233210000" />
+    <option name="totallyTimeSpent" value="253853000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -404,7 +396,7 @@
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.25204584" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.25204584" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -478,16 +470,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-907">
           <caret line="202" selection-start-line="202" selection-end-line="202" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../SoundPlayer/src/SoundPlayerGUI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3196">
-          <caret line="257" column="9" lean-forward="true" selection-start-line="257" selection-start-column="9" selection-end-line="257" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -695,27 +677,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/TalkBox/Pro/simulatorGUI/SoundEngine.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TalkBox/Pro/TalkBoxConfigurationGUI/ConfigurationAppGUITest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7582">
           <caret line="446" column="45" selection-start-line="446" selection-start-column="45" selection-end-line="446" selection-end-column="45" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/TalkBox/Pro/ConfigurationAppGUITest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="376" column="13" selection-start-line="376" selection-start-column="13" selection-end-line="376" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -732,10 +697,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/TalkBox/Pro/simulatorGUI/SoundEngine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/TalkBox/Pro/ConfigurationAppGUITest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="134" column="11" selection-start-line="134" selection-start-column="11" selection-end-line="134" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../SoundPlayer/src/SoundPlayerGUI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="296">
+          <caret line="248" column="46" lean-forward="true" selection-start-line="248" selection-start-column="46" selection-end-line="248" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/TalkBox/Pro/TalkBoxConfigurationGUI/ConfigurationAppGUI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="613" column="19" lean-forward="true" selection-start-line="613" selection-start-column="19" selection-end-line="613" selection-end-column="19" />
+        <state relative-caret-position="293">
+          <caret line="336" column="21" lean-forward="true" selection-start-line="336" selection-start-column="21" selection-end-line="336" selection-end-column="21" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

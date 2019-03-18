@@ -627,7 +627,7 @@ public class ConfigurationAppGUI extends JFrame
             else {
                 orderModel.removeElementAt(order.getItemCount() - 1);
                 initialListModel.removeElementAt(order.getItemCount());
-            }
+            } 
         }
         else
             JOptionPane.showMessageDialog(null, "Sorry, you can't remove more buttons");

@@ -1,7 +1,5 @@
 package test.java.TalkBox.Pro;
 
-import TalkBoxConfigurationGUI.SaveData;
-import TalkBoxConfigurationGUI.TalkBoxConfiguration;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

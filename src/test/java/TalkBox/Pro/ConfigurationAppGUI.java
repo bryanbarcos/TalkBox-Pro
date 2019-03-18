@@ -1,6 +1,5 @@
 package test.java.TalkBox.Pro;
 
-import simulatorGUI.SimulatorApp;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;

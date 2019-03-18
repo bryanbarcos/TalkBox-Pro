@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test.java.TalkBox.Pro.ConfigurationAppGUITest" tests="13" skipped="0" failures="0" errors="0" timestamp="2019-03-11T19:23:50" hostname="LAPTOP-FFPRL633" time="51.155">
+  <properties/>
+  <testcase name="testSaveChangesButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="8.101"/>
+  <testcase name="testLaunchSimulator()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="1.41"/>
+  <testcase name="testAddInitialButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="2.321"/>
+  <testcase name="testClickPlayButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="2.469"/>
+  <testcase name="testClickPauseButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="1.452"/>
+  <testcase name="testClickResumeButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="1.92"/>
+  <testcase name="testClickStopButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="3.251"/>
+  <testcase name="testClickResetButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="1.021"/>
+  <testcase name="testClickSwapButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="1.091"/>
+  <testcase name="testAddFinalButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="14.065"/>
+  <testcase name="testFindFiles()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="8.148"/>
+  <testcase name="testRemoveFinalButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="2.252"/>
+  <testcase name="testRemoveInitialButton()" classname="test.java.TalkBox.Pro.ConfigurationAppGUITest" time="2.112"/>
+  <system-out><![CDATA[3
+4
+c is: 0
+c is: 5
+c is: 5
+c is: 5
+c is: 12
+c is: 12
+12
+.\Sounds
+[[Belch.wav, Big Kiss.wav, Cheering.wav]
+[Cry.wav, Giggle.wav, Kendrick Lamar - King Kunta.wav]
+[Laugh(Male Adult).wav, No.wav, Outkast - M.s Jackson.wav]
+[Sick.wav, Surprised.wav, Tired.wav]]
+]]></system-out>
+  <system-err><![CDATA[Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
+	at javax.swing.plaf.synth.SynthComboBoxUI.shouldActLikeButton(Unknown Source)
+	at javax.swing.plaf.synth.SynthComboBoxUI.getComponentState(Unknown Source)
+	at javax.swing.plaf.synth.SynthComboBoxUI.getContext(Unknown Source)
+	at javax.swing.plaf.synth.SynthComboBoxUI.update(Unknown Source)
+	at javax.swing.JComponent.paintComponent(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.paintChildren(Unknown Source)
+	at javax.swing.JComponent.paint(Unknown Source)
+	at javax.swing.JComponent.paintToOffscreen(Unknown Source)
+	at javax.swing.RepaintManager$PaintManager.paintDoubleBuffered(Unknown Source)
+	at javax.swing.RepaintManager$PaintManager.paint(Unknown Source)
+	at javax.swing.RepaintManager.paint(Unknown Source)
+	at javax.swing.JComponent._paintImmediately(Unknown Source)
+	at javax.swing.JComponent.paintImmediately(Unknown Source)
+	at javax.swing.RepaintManager$4.run(Unknown Source)
+	at javax.swing.RepaintManager$4.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at javax.swing.RepaintManager.paintDirtyRegions(Unknown Source)
+	at javax.swing.RepaintManager.paintDirtyRegions(Unknown Source)
+	at javax.swing.RepaintManager.prePaintDirtyRegions(Unknown Source)
+	at javax.swing.RepaintManager.access$1200(Unknown Source)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(Unknown Source)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+Exception in thread "AWT-EventQueue-0" java.lang.NullPointerException
+	at javax.swing.plaf.basic.BasicComboBoxUI.getMinimumSize(Unknown Source)
+	at javax.swing.plaf.basic.BasicComboBoxUI.getPreferredSize(Unknown Source)
+	at javax.swing.JComponent.getPreferredSize(Unknown Source)
+	at java.awt.FlowLayout.preferredLayoutSize(Unknown Source)
+	at java.awt.Container.preferredSize(Unknown Source)
+	at java.awt.Container.getPreferredSize(Unknown Source)
+	at javax.swing.JComponent.getPreferredSize(Unknown Source)
+	at java.awt.BorderLayout.preferredLayoutSize(Unknown Source)
+	at java.awt.Container.preferredSize(Unknown Source)
+	at java.awt.Container.getPreferredSize(Unknown Source)
+	at javax.swing.JComponent.getPreferredSize(Unknown Source)
+	at java.awt.BorderLayout.layoutContainer(Unknown Source)
+	at java.awt.Container.layout(Unknown Source)
+	at java.awt.Container.doLayout(Unknown Source)
+	at java.awt.Container.validateTree(Unknown Source)
+	at java.awt.Container.validateTree(Unknown Source)
+	at java.awt.Container.validateTree(Unknown Source)
+	at java.awt.Container.validate(Unknown Source)
+	at javax.swing.RepaintManager$3.run(Unknown Source)
+	at javax.swing.RepaintManager$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at javax.swing.RepaintManager.validateInvalidComponents(Unknown Source)
+	at javax.swing.RepaintManager$ProcessingRunnable.run(Unknown Source)
+	at java.awt.event.InvocationEvent.dispatch(Unknown Source)
+	at java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+	at java.awt.EventQueue.access$500(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.awt.EventQueue$3.run(Unknown Source)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+	at java.awt.EventQueue.dispatchEvent(Unknown Source)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+	at java.awt.EventDispatchThread.run(Unknown Source)
+]]></system-err>
+</testsuite>

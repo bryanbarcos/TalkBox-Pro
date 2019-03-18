@@ -1,6 +1,4 @@
-package TalkBoxConfigurationGUI;
-
-import simulatorGUI.SimulatorApp;
+package main.java.TalkBox.Pro;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -8,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,34 +30,34 @@ public class ConfigurationAppGUI extends JFrame
     //private static final String AUDIO_DIR = new File("/Sounds").toURI().relativize(new File("X:/York 2/EECS2311/TalkBox-Pro/Sounds").toURI()).getPath();
     private static final String fileName = "TalkBoxConfig.txt";
 
-    JList audioList;
+    public JList audioList;
     private JSlider slider;
     private JLabel infoLabel;
     private SoundEngine player;
     private JList initialList;
     private JList finalList;
     private JComboBox <Integer> order;
-    DefaultListModel initialListModel; 
-    DefaultListModel finalListModel; 
+    public DefaultListModel initialListModel; 
+    public DefaultListModel finalListModel; 
     private DefaultListModel audioListModel;
-    private Integer[] orderButtons = {1, 2, 3};
+    public Integer[] orderButtons = {1, 2, 3};
     private DefaultComboBoxModel orderModel;
     Component[] comp;
     int c = 0;
 
-    JButton playBtn;
-    JButton stopBtn;
-    JButton pauseBtn;
-    JButton resumeBtn;
-    JButton resetBtn;
-    JButton swapBtn;
-    JButton saveChangesBtn;
-    JButton addFinalBtn;
-    JButton addNewBtn;
-    JButton removeNewBtn;
-    JButton removeFinalBtn;
-    JButton launchSimApp;
-    SimulatorApp myFrame;
+    public JButton playBtn;
+    public JButton stopBtn;
+    public JButton pauseBtn;
+    public JButton resumeBtn;
+    public JButton resetBtn;
+    public JButton swapBtn;
+    public JButton saveChangesBtn;
+    public JButton addFinalBtn;
+    public JButton addNewBtn;
+    public JButton removeNewBtn;
+    public JButton removeFinalBtn;
+    public JButton launchSimApp;
+    public SimulatorApp myFrame;
     File sounds = new File(fileName);
 
 

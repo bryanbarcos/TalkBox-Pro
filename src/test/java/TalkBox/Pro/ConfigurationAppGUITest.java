@@ -1,4 +1,4 @@
-package TalkBoxConfigurationGUI;
+package test.java.TalkBox.Pro;
 
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,6 +9,10 @@ import javax.swing.DefaultListModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import main.java.TalkBox.Pro.ConfigurationAppGUI;
+import main.java.TalkBox.Pro.SoundEngine;
+import main.java.TalkBox.Pro.TalkBoxConfiguration;
 
 class ConfigurationAppGUITest {
 
@@ -28,6 +32,7 @@ class ConfigurationAppGUITest {
 	 * if the method returns the correct files when a suffix is passed.
 	 */
 
+	//@Disabled
 	@Test
 	public void testFindFiles() {
 		int i = 0;
@@ -71,10 +76,11 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
+	//@Disabled
 	@Test
 	public void testClickPlayButton() throws InterruptedException {
 		Thread.sleep(1000);
-		// click play button
+		//click play button
 		gui.playBtn.doClick();
 		Thread.sleep(1000);
 	}
@@ -85,6 +91,7 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
+	//@Disabled
 	@Test
 	public void testClickStopButton() throws InterruptedException {
 		Thread.sleep(1000);
@@ -102,6 +109,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testClickPauseButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -119,6 +128,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testClickResumeButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -139,6 +150,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testClickResetButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -172,6 +185,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testClickSwapButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -220,7 +235,7 @@ class ConfigurationAppGUITest {
 		// change list to next 3 audio files, if reach end of audio files go back to
 		// beginning
 		for (int i = 0; i <= 2; i++) {
-			if (k == 10) {
+			if (k == files1.length) {
 				k = 0;
 			}
 
@@ -239,6 +254,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testSaveChangesButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -263,9 +280,13 @@ class ConfigurationAppGUITest {
 		// store final list
 		DefaultListModel<?> initialFinalList = gui.finalListModel;
 
+		Thread.sleep(1000);
+		
 		// click save changes button
 		gui.saveChangesBtn.doClick();
 
+		
+		Thread.sleep(1000);
 		// compare new initial list with old final list
 		assertArrayEquals(gui.initialListModel.toArray(), initialFinalList.toArray());
 
@@ -281,6 +302,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testAddInitialButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -304,12 +327,12 @@ class ConfigurationAppGUITest {
 
 		// add the remaining 7 available buttons to initial list
 
-		for (int j = 0; j <= 6; j++) {
-			gui.addNewBtn.doClick();
-		}
-
 		File soundFile = new File("Sounds");
 		File[] files1 = soundFile.listFiles();
+	
+		for (int j = 0; j < files1.length - gui.orderButtons.length; j++) {
+			gui.addNewBtn.doClick();
+		}
 
 		assertEquals(gui.initialListModel.getSize(), files1.length);
 
@@ -328,6 +351,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testRemoveInitialButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -360,6 +385,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testAddFinalButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -400,6 +427,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testRemoveFinalButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -435,6 +464,8 @@ class ConfigurationAppGUITest {
 	 * 
 	 * @throws InterruptedException
 	 */
+	
+	//@Disabled
 	@Test
 	public void testLaunchSimulator() throws InterruptedException {
 		Thread.sleep(100);

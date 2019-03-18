@@ -1,10 +1,10 @@
-package simulatorGUI;
-
-import TalkBoxConfigurationGUI.SaveData;
-import TalkBoxConfigurationGUI.TalkBoxConfiguration;
+package main.java.TalkBox.Pro;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+import main.java.TalkBox.Pro.SimulatorApp;
+
 import java.awt.*;
 import java.io.File;
 import java.io.ObjectInputStream;

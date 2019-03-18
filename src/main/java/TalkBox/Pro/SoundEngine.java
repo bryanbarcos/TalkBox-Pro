@@ -1,4 +1,4 @@
-package TalkBoxConfigurationGUI;
+package main.java.TalkBox.Pro;
 
 import java.io.*;
 import javax.sound.sampled.*;

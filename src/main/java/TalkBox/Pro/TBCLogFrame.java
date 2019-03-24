@@ -40,15 +40,14 @@ public class TBCLogFrame extends JFrame{
 		frame.setMaximumSize(new Dimension(width, height));
 		frame.setMinimumSize(new Dimension(width, height));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
-		mainPanel.setVisible(true);
-		
 		frame.add(mainPanel);
+		mainPanel.setVisible(true);
 		frame.pack();
 	}
 

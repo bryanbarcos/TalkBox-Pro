@@ -32,12 +32,13 @@ public class TBCLogComponents {
 		lastMonthButton = new JButton("Last Month");
 		
 		timePanel = new JPanel();
-		timePanel.setLayout(new BoxLayout(timePanel, BoxLayout.X_AXIS));
 		timePanel.add(todayButton);
 		timePanel.add(yesterdayButton);
 		timePanel.add(pastWeekButton);
 		timePanel.add(lastMonthButton);
+		timePanel.setVisible(true);
 		
 		frame.mainPanel.add(timePanel, BorderLayout.NORTH);
+		
 	}
 }

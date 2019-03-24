@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-<<<<<<< HEAD
+
     // This dependency is found on compile classpath of this component and consumers.
     // Use JUnit test framework\
     
@@ -42,13 +42,9 @@ jar {
  }
 }
 
-// Define the main class for the application
-mainClassName = 'TalkBox.Pro.ConfigurationAppGUI'
-=======
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
-}
+
 
 // Define the main class for the application
-mainClassName = 'TalkBox.Pro.App'
->>>>>>> 47d7fd428e329c23b88c685999c5747df054b156
+mainClassName = 'TalkBox.Pro.ConfigurationAppGUI'
+
+

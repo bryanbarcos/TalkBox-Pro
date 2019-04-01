@@ -1,3 +1,4 @@
+
 package test.java.TalkBox.Pro;
 
 import static org.junit.Assert.fail;
@@ -487,3 +488,5 @@ class ConfigurationAppGUITest {
 	}
 
 }
+
+

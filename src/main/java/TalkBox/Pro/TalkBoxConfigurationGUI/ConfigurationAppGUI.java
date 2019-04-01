@@ -45,7 +45,7 @@ public class ConfigurationAppGUI extends JFrame
     public DefaultListModel initialListModel;
     public DefaultListModel finalListModel;
     private DefaultListModel audioListModel;
-    private Integer[] orderButtons = {1, 2, 3};
+    public Integer[] orderButtons = {1, 2, 3};
     private DefaultComboBoxModel orderModel;
     Component[] comp;
     int c = 0;

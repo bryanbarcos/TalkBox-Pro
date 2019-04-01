@@ -4,6 +4,7 @@ package test.java.TalkBox.Pro;
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 import java.io.File;
 import java.lang.String;
 import javax.swing.DefaultListModel;
@@ -11,9 +12,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import main.java.TalkBox.Pro.ConfigurationAppGUI;
-import main.java.TalkBox.Pro.SoundEngine;
-import main.java.TalkBox.Pro.TalkBoxConfiguration;
+
+import main.java.TalkBox.Pro.*;
+import main.java.TalkBox.Pro.TalkBoxConfigurationGUI.ConfigurationAppGUI;
+import main.java.TalkBox.Pro.TalkBoxConfigurationGUI.SoundEngine;
+import main.java.TalkBox.Pro.TalkBoxConfigurationGUI.TalkBoxConfiguration;
 
 class ConfigurationAppGUITest {
 

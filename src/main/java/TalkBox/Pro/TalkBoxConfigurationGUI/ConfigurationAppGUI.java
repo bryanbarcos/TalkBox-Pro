@@ -34,11 +34,11 @@ public class ConfigurationAppGUI extends JFrame
     private static final String AUDIO_DIR = Paths.get("Sounds").toString();
     //private static final String AUDIO_DIR = new File("/Sounds").toURI().relativize(new File("X:/York 2/EECS2311/TalkBox-Pro/Sounds").toURI()).getPath();
     private static final String fileName = "TalkBoxConfig.txt";
-
+    
     public JList audioList;
     private JSlider slider;
     private JLabel infoLabel;
-    private SoundEngine player;
+    public SoundEngine player;
     private JList initialList;
     private JList finalList;
     private JComboBox <Integer> order;
@@ -71,6 +71,17 @@ public class ConfigurationAppGUI extends JFrame
 
     //Main method for starting the player from a command line.
     public static void main(String[] args){ ConfigurationAppGUI gui = new ConfigurationAppGUI(); }
+    
+    public static boolean isJUnitTest() {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        List<StackTraceElement> list = Arrays.asList(stackTrace);
+        for (StackTraceElement element : list) {
+            if (element.getClassName().startsWith("org.junit.")) {
+                return true;
+            }           
+        }
+        return false;
+    }
 
     //Create a TalkBox and display its GUI on screen.
     public ConfigurationAppGUI() {
@@ -102,6 +113,11 @@ public class ConfigurationAppGUI extends JFrame
                         orderModel.addElement(data.order.getModel().getElementAt(i));
                 }
             }
+            
+            
+            
+          //DOUBLE CHECK THIS FOR TESTING
+            
             else {
                 JOptionPane.showMessageDialog(null, "Sorry the Sounds directory does not exist" +
                         " or it is not a directory or it is empty.\n" +
@@ -134,8 +150,11 @@ public class ConfigurationAppGUI extends JFrame
 
         String filename = (String)audioList.getSelectedValue();
         if(filename == null) {  // nothing selected
+        	if (isJUnitTest() == false) {
             JOptionPane.showMessageDialog(null, "Please select a file from Audio Files to play.");
             return;
+        	}
+        	return;
         }
         slider.setValue(0);
         boolean successful = player.play(new File(AUDIO_DIR, filename));
@@ -196,9 +215,12 @@ public class ConfigurationAppGUI extends JFrame
             }
         }
         else {
-            JOptionPane.showMessageDialog(null, "Error: " + dirName + " must be a directory");
-            return null;
-        }
+
+        	JOptionPane.showMessageDialog(null, "Error: " + dirName + " must be a directory");
+    		return null;
+        	}
+  
+
     }
 
     // ------- ChangeListener interface (for Slider) -------
@@ -348,7 +370,9 @@ public class ConfigurationAppGUI extends JFrame
                         myFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Please try to save before launching simulator app");
+                    	if (isJUnitTest() == false) {
+                    		JOptionPane.showMessageDialog(null, "Please try to save before launching simulator app");
+                    	}  
                     }
                 });
                 launchSimApp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -505,7 +529,7 @@ public class ConfigurationAppGUI extends JFrame
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(d.width/2 - getWidth()/2, d.height/2 - getHeight()/2);
         setVisible(true);
-        if(!savedConfig.exists()) {
+        if(!savedConfig.exists() && isJUnitTest() == false) {
             tutorial();
         }
     }
@@ -589,7 +613,9 @@ public class ConfigurationAppGUI extends JFrame
     //Added the edit button functionality to add audio files to final list.
     private void addFinalBtn(String[] audioFiles) {
         if(audioList.isSelectionEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please select an audio from audio list");
+        	if (isJUnitTest() == false) {
+        		JOptionPane.showMessageDialog(null, "Please select an audio from audio list");
+        	}
         }
         else {
             int reply = JOptionPane.showConfirmDialog(null, "1. To add to the last " +
@@ -725,7 +751,7 @@ public class ConfigurationAppGUI extends JFrame
         }
     }
 
-    private  void tutorial()
+    public void tutorial()
     {
         String[] buttons = { "OK", "SKIP"};
         String[] tutorialText = {"Welcome to TalkBox Configuration App!, A short tutorial for you" +
@@ -755,6 +781,7 @@ public class ConfigurationAppGUI extends JFrame
                 , "For more info about buttons, just keep " +
                 "the cursor on the button for 3-5 seconds."
         };
+    	
 
         String[] tutorialTitle = {"Welcome To TalkBox"
                 , "Tutorial: Top Row"
@@ -780,6 +807,8 @@ public class ConfigurationAppGUI extends JFrame
             }
         }
     }
+    	
+
 
     //Method to start recording
     private void startRecording() {

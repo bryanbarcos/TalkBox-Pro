@@ -1,3 +1,10 @@
-Hello
-How are you
-I am fine
+Wed Apr 03 11:57:52 EDT 2019: The 'Play Audio File' was pressed
+Wed Apr 03 11:57:53 EDT 2019: The 'Pause Button' was pressed
+Wed Apr 03 11:57:55 EDT 2019: The 'Pause Button' was pressed
+Wed Apr 03 11:57:55 EDT 2019: The 'Stop Button' was pressed
+Wed Apr 03 11:57:56 EDT 2019: The 'Reset Button' was pressed
+Wed Apr 03 11:57:57 EDT 2019: The 'Swap Button' was pressed
+Wed Apr 03 11:58:00 EDT 2019: The 'Save Changes Button' was pressed
+Wed Apr 03 11:58:06 EDT 2019: The 'Add Audio File Button' for the Final Audio List was pressed
+Wed Apr 03 11:58:07 EDT 2019: The 'Remove Audio File Button' for the Final Audio List was pressed
+Wed Apr 03 11:58:09 EDT 2019: The 'Simulator App' was pressed

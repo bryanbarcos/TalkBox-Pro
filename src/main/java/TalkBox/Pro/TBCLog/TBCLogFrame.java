@@ -34,7 +34,7 @@ public class TBCLogFrame extends JFrame{
 		frame.setLocationRelativeTo(null);
 		this.createScrollPanel();
 		frame.setVisible(true);
-		
+		frame.pack();
 		
 		/*this.createButtonsPanel();*/
 		//this.createScrollPanel();

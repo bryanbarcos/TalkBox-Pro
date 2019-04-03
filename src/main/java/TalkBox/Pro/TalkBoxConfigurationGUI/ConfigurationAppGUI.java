@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -301,7 +302,18 @@ public class ConfigurationAppGUI extends JFrame
                 ImageIcon addFinalIcn = new ImageIcon("Icons/Add.png");
                 setButtonIcon(addFinalBtn, addFinalIcn);
                 addFinalBtn.setToolTipText("Add to Final List");
-                addFinalBtn.addActionListener(e -> addFinalBtn(audioFiles));
+                addFinalBtn.addActionListener(e -> 
+                { 
+                	addFinalBtn(audioFiles);
+                	WriteFile data = new WriteFile("Logger.txt", true);
+                    try {
+                    	Date now = new Date();
+            			data.writeToFile(now + ": The 'Add Audio File Button' for the Final Audio List was pressed");
+            		} catch (IOException j) {
+            			// TODO Auto-generated catch block
+            			j.printStackTrace();
+            		}
+                });
                 addFinalBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(addFinalBtn);
 
@@ -310,7 +322,18 @@ public class ConfigurationAppGUI extends JFrame
                 ImageIcon removeFinalIcn = new ImageIcon("Icons/Remove.png");
                 setButtonIcon(removeFinalBtn, removeFinalIcn);
                 removeFinalBtn.setToolTipText("Remove from Final List");
-                removeFinalBtn.addActionListener(e -> removeFinalBtn());
+                removeFinalBtn.addActionListener(e ->
+                { 
+                	removeFinalBtn();
+                	WriteFile data = new WriteFile("Logger.txt", true);
+                    try {
+                    	Date now = new Date();
+            			data.writeToFile(now + ": The 'Remove Audio File Button' for the Final Audio List was pressed");
+            		} catch (IOException j) {
+            			// TODO Auto-generated catch block
+            			j.printStackTrace();
+            		}
+                });
                 removeFinalBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(removeFinalBtn);
 
@@ -350,6 +373,14 @@ public class ConfigurationAppGUI extends JFrame
                     else {
                         JOptionPane.showMessageDialog(null, "Please try to save before launching simulator app");
                     }
+                    WriteFile data = new WriteFile("Logger.txt", true);
+                    try {
+                    	Date now = new Date();
+            			data.writeToFile(now + ": The 'Simulator App' was pressed");
+            		} catch (IOException j) {
+            			// TODO Auto-generated catch block
+            			j.printStackTrace();
+            		}
                 });
                 launchSimApp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(launchSimApp);
@@ -435,6 +466,14 @@ public class ConfigurationAppGUI extends JFrame
             setButtonIcon(playBtn, playIcn);
             playBtn.addActionListener(e -> {
                 play();
+                WriteFile data = new WriteFile("Logger.txt", true);
+                try {
+                	Date now = new Date();
+        			data.writeToFile(now + ": The 'Play Audio File' was pressed");
+        		} catch (IOException j) {
+        			// TODO Auto-generated catch block
+        			j.printStackTrace();
+        		}
             });
             playBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(playBtn);
@@ -457,6 +496,15 @@ public class ConfigurationAppGUI extends JFrame
                     resume();
                 }
                 isPaused[0] = !isPaused[0];
+                
+                WriteFile data = new WriteFile("Logger.txt", true);
+                try {
+                	Date now = new Date();
+        			data.writeToFile(now + ": The 'Pause Button' was pressed");
+        		} catch (IOException j) {
+        			// TODO Auto-generated catch block
+        			j.printStackTrace();
+        		}
                 });
             pauseBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(pauseBtn);
@@ -465,7 +513,19 @@ public class ConfigurationAppGUI extends JFrame
             ImageIcon stopIcn = new ImageIcon("Icons/Stop.png");
             setButtonIcon(stopBtn, stopIcn);
             stopBtn.setToolTipText("Stop");
-            stopBtn.addActionListener(e -> stop());
+            stopBtn.addActionListener(e -> 
+            {
+            	stop();
+            	
+            	WriteFile data = new WriteFile("Logger.txt", true);
+                try {
+                	Date now = new Date();
+        			data.writeToFile(now + ": The 'Stop Button' was pressed");
+        		} catch (IOException j) {
+        			// TODO Auto-generated catch block
+        			j.printStackTrace();
+        		}
+            });
             stopBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(stopBtn);
 
@@ -473,7 +533,19 @@ public class ConfigurationAppGUI extends JFrame
             ImageIcon resetIcn = new ImageIcon("Icons/Reset.png");
             setButtonIcon(resetBtn, resetIcn);
             resetBtn.setToolTipText("Reset");
-            resetBtn.addActionListener(e -> reset(audioFiles));
+            resetBtn.addActionListener(e -> 
+            {
+            	reset(audioFiles);
+            	
+            	WriteFile data = new WriteFile("Logger.txt", true);
+                try {
+                	Date now = new Date();
+        			data.writeToFile(now + ": The 'Reset Button' was pressed");
+        		} catch (IOException j) {
+        			// TODO Auto-generated catch block
+        			j.printStackTrace();
+        		}
+            });
             resetBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(resetBtn);
 
@@ -481,7 +553,18 @@ public class ConfigurationAppGUI extends JFrame
             ImageIcon swapIcn = new ImageIcon("Icons/Swap.png");
             setButtonIcon(swapBtn, swapIcn);
             swapBtn.setToolTipText("Swap");
-            swapBtn.addActionListener(e -> swap(audioFiles));
+            swapBtn.addActionListener(e -> 
+            {
+            	swap(audioFiles);
+            	WriteFile data = new WriteFile("Logger.txt", true);
+                try {
+                	Date now = new Date();
+        			data.writeToFile(now + ": The 'Swap Button' was pressed");
+        		} catch (IOException j) {
+        			// TODO Auto-generated catch block
+        			j.printStackTrace();
+        		}
+            });
             swapBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(swapBtn);
 
@@ -489,7 +572,19 @@ public class ConfigurationAppGUI extends JFrame
             ImageIcon saveChangesIcn = new ImageIcon("Icons/Save.png");
             setButtonIcon(saveChangesBtn, saveChangesIcn);
             saveChangesBtn.setToolTipText("Save Changes");
-            saveChangesBtn.addActionListener(e -> saveChanges());
+            saveChangesBtn.addActionListener(e -> 
+            {
+            	saveChanges();
+            	
+            	WriteFile data = new WriteFile("Logger.txt", true);
+                try {
+                	Date now = new Date();
+        			data.writeToFile(now + ": The 'Save Changes Button' was pressed");
+        		} catch (IOException j) {
+        			// TODO Auto-generated catch block
+        			j.printStackTrace();
+        		}
+            });
             saveChangesBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(saveChangesBtn);
             //toolbar.setBackground(Color.BLACK);
@@ -534,7 +629,17 @@ public class ConfigurationAppGUI extends JFrame
             }
             catch (Exception el) {
                 JOptionPane.showMessageDialog(null, el.getMessage());
-            }});
+            }
+            
+            WriteFile data = new WriteFile("Logger.txt", true);
+            try {
+            	Date now = new Date();
+    			data.writeToFile(now + ": The 'Add New Audio File' from top menu was pressed");
+    		} catch (IOException j) {
+    			// TODO Auto-generated catch block
+    			j.printStackTrace();
+    		}
+            });
         menu.add(item);
 
         item = new JMenuItem("Quit");
@@ -547,11 +652,35 @@ public class ConfigurationAppGUI extends JFrame
         menubar.add(menu);
 
         item = new JMenuItem("Tutorial");
-        item.addActionListener(e -> tutorial());
+        item.addActionListener(e -> 
+        {
+        	tutorial();
+        	
+        	WriteFile data = new WriteFile("Logger.txt", true);
+            try {
+            	Date now = new Date();
+    			data.writeToFile(now + ": The 'Tutorial' from top menu was pressed");
+    		} catch (IOException j) {
+    			// TODO Auto-generated catch block
+    			j.printStackTrace();
+    		}
+        });
         menu.add(item);
 
         item = new JMenuItem("About TalkBox...");
-        item.addActionListener(e -> showAbout());
+        item.addActionListener(e -> 
+        {
+        	showAbout();
+        	
+        	WriteFile data = new WriteFile("Logger.txt", true);
+            try {
+            	Date now = new Date();
+    			data.writeToFile(now + ": The 'About TalkBox' from menu was pressed");
+    		} catch (IOException j) {
+    			// TODO Auto-generated catch block
+    			j.printStackTrace();
+    		}
+        });
         menu.add(item);
     }
 

@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.File;
 import java.lang.String;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -100,7 +102,7 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	// @Disabled
+	@Disabled
 	@Test
 	public void testClickStopButton() throws InterruptedException {
 		Thread.sleep(1000);
@@ -126,10 +128,14 @@ class ConfigurationAppGUITest {
 		Thread.sleep(100);
 		selectFile(1);
 		clickPlay();
-		Thread.sleep(700);
+		Thread.sleep(400);
 
 		clickPause();
+		assertFalse(isPlaying());
 		Thread.sleep(100);
+		clickResume();
+		assertTrue(isPlaying());
+		clickStop();
 	}
 
 	/**
@@ -145,12 +151,15 @@ class ConfigurationAppGUITest {
 		// play third audio file in list
 		selectFile(2);
 		clickPlay();
-		Thread.sleep(600);
+
 		clickPause();
-		Thread.sleep(500);
+
 		// resume currently paused audio file
 		clickResume();
-		Thread.sleep(100);
+
+		assertTrue(isPlaying());
+
+		clickStop();
 	}
 
 	/**
@@ -163,28 +172,28 @@ class ConfigurationAppGUITest {
 	@Test
 	public void testClickResetButton() throws InterruptedException {
 		Thread.sleep(100);
-		// click reset button
-		clickReset();
 
-		assertEquals(gui.getNumberOfAudioSets(), 4);
-		assertEquals(gui.getNumberOfAudioButtons(), 3);
-		String[][] defaultArray = gui.getAudioFileNames();
-		// add two new buttons
-		clickAddButton();
-		clickAddButton();
-		// add first and second elements to final list
-		selectFile(0);
-		clickAddButton();
-		selectFile(1);
-		clickAddButton();
-		clickReset();
-		String[][] resetArray = gui.getAudioFileNames();
+		if (hasSavedData()) {
 
-		assertArrayEquals(defaultArray, resetArray);
-		assertTrue(gui.finalListModel.isEmpty());
-		assertEquals(gui.getNumberOfAudioSets(), 4);
-		assertEquals(gui.getNumberOfAudioButtons(), 3);
-		Thread.sleep(100);
+			assertEquals(gui.initialListModel.getSize(), gui.finalListModel.getSize());
+			clickReset();
+			assertEquals(gui.initialListModel.getSize(), gui.finalListModel.getSize());
+
+			selectFile(6);
+			gui.yesOrNo = gui.YES;
+			clickAddButton();
+			assertNotEquals(gui.initialListModel.getSize(), gui.finalListModel.getSize());
+
+			clickReset();
+
+			assertEquals(gui.initialListModel.getSize(), gui.finalListModel.getSize());
+
+		}
+
+		else {
+			assertEquals(gui.initialListModel.getSize(), 0);
+
+		}
 	}
 
 	/**
@@ -198,6 +207,8 @@ class ConfigurationAppGUITest {
 	public void testClickSwapButton() throws InterruptedException {
 		Thread.sleep(100);
 		// get file names for audio files
+		int buttons = gui.getNumberOfAudioButtons();
+		int k = gui.getNumberOfAudioButtons();
 		int j = 0;
 		File soundFile = new File("Sounds");
 		File[] files1 = soundFile.listFiles();
@@ -206,52 +217,29 @@ class ConfigurationAppGUITest {
 			allFiles[j] = file.getName();
 			++j;
 		}
-		String[] initialList = { allFiles[0], allFiles[1], allFiles[2] };
+		String[] initialList = new String[k];
 
-		clickReset();
-		selectFile(3);
-		clickAddButton();
-		selectFile(2);
-		clickAddButton();
-		selectFile(0);
-		clickAddButton();
-
-		assertArrayEquals(initialList, gui.finalListModel.toArray());
-
-		int k = 3;
-
-		// change initial list to next 3 audio files
-		for (int i = 0; i <= 2; i++) {
-			initialList[i] = allFiles[k];
-			k++;
-		}
-		// press swap button
-		clickSwap();
-		assertArrayEquals(initialList, gui.finalListModel.toArray());
-
-		// change initial list to next 3 audio files
-		for (int i = 0; i <= 2; i++) {
-			initialList[i] = allFiles[k];
-			k++;
-		}
-		clickSwap();
-		assertArrayEquals(initialList, gui.finalListModel.toArray());
-
-		// change list to next 3 audio files, if reach end of audio files go back to
-		// beginning
-		for (int i = 0; i <= 2; i++) {
-			if (k == files1.length) {
-				k = 0;
+			for (int i = 0; i < buttons; i++) {
+				if (k == files1.length) {
+					k = 0;
+				}
+				initialList[i] = allFiles[k];
+				k++;
 			}
-
-			initialList[i] = allFiles[k];
-			k++;
+			clickSwap();
+			assertArrayEquals(initialList, gui.finalListModel.toArray());
+			
+			for (int i = 0; i < buttons; i++) {
+				if (k == files1.length) {
+					k = 0;
+				}
+				initialList[i] = allFiles[k];
+				k++;
+			}
+			clickSwap();
+			assertArrayEquals(initialList, gui.finalListModel.toArray());
 		}
-		clickSwap();
-		Thread.sleep(100);
-		assertArrayEquals(initialList, gui.finalListModel.toArray());
-		Thread.sleep(100);
-	}
+
 
 	/**
 	 * Testing the Save Changes button in the Configuration App
@@ -263,119 +251,47 @@ class ConfigurationAppGUITest {
 	@Test
 	public void testSaveChangesButton() throws InterruptedException {
 		Thread.sleep(100);
-		clickReset();
 
-		// add arbitrary audio files to final list
-		selectFile(4);
-		clickAddButton();
+		if (hasSavedData()) {
+			DefaultListModel<?> savedData = gui.finalListModel;
+			
+			if (savedData.size() > 3) {
+				
+				clickRemoveButton();
+				clickSave();
+			}
+			
+			else {
+				selectFile(6);
+				clickAddButton();
+				selectFile(9);
+				clickAddButton();
+				clickSave();
+			}
+			DefaultListModel<?> initialFinalList = gui.finalListModel;
+			assertArrayEquals(gui.initialListModel.toArray(), initialFinalList.toArray());
 
-		clickSave();
-		// check if any changes made to initial list
-		if (gui.initialListModel.toArray() == gui.finalListModel.toArray()) {
-			fail();
+			// open new TalkBox after saving
+			ConfigurationAppGUI gui2 = new ConfigurationAppGUI();
+
+			assertArrayEquals(gui2.initialListModel.toArray(), initialFinalList.toArray());
+			gui.finalListModel = savedData;
 		}
-
-		selectFile(2);
-		clickAddButton();
-		selectFile(6);
-		clickAddButton();
-
-		// store final list
-		DefaultListModel<?> initialFinalList = gui.finalListModel;
-
-		Thread.sleep(1000);
-
-		clickSave();
-
-		Thread.sleep(1000);
-		// compare new initial list with old final list
-		assertArrayEquals(gui.initialListModel.toArray(), initialFinalList.toArray());
-
-		// open new TalkBox after saving
-		ConfigurationAppGUI gui2 = new ConfigurationAppGUI();
-
-		assertArrayEquals(gui2.initialListModel.toArray(), initialFinalList.toArray());
-
-	}
-
-	/**
-	 * Testing the Add Initial button in the Configuration App
-	 * 
-	 * @throws InterruptedException
-	 */
-
-	@Disabled
-	@Test
-	public void testAddInitialButton() throws InterruptedException {
-		Thread.sleep(100);
-		clickReset();
-		// i is size of current initial list
-		int i = gui.initialListModel.getSize();
-		clickAddButton();
-
-		assertEquals(gui.initialListModel.getSize(), i + 1);
-		i++;
-
-		clickAddButton();
-
-		clickAddButton();
-
-		assertEquals(gui.initialListModel.getSize(), i + 2);
-
-		clickReset();
-
-		// add the remaining 7 available buttons to initial list
-
-		File soundFile = new File("Sounds");
-		File[] files1 = soundFile.listFiles();
-
-		for (int j = 0; j < files1.length - gui.orderButtons.length; j++) {
+		
+		else {
+			selectFile(4);
 			clickAddButton();
+			clickSave();
+			
+			DefaultListModel<?> initialFinalList = gui.finalListModel;
+			assertArrayEquals(gui.initialListModel.toArray(), initialFinalList.toArray());
+
+			// open new TalkBox after saving
+			ConfigurationAppGUI gui2 = new ConfigurationAppGUI();
+
+			assertArrayEquals(gui2.initialListModel.toArray(), initialFinalList.toArray());
+			deleteSaved();
 		}
-
-		assertEquals(gui.initialListModel.getSize(), files1.length);
-
-		clickAddButton();
-
-		// ensure no changes has been made after attempting to add too many buttons
-		assertEquals(gui.initialListModel.getSize(), gui.getNumberOfAudioButtons());
-		assertEquals(gui.initialListModel.getSize(), files1.length);
-
-		Thread.sleep(100);
-
-	}
-
-	/**
-	 * Testing the Remove Initial button in the Configuration App
-	 * 
-	 * @throws InterruptedException
-	 */
-
-	@Disabled
-	@Test
-	public void testRemoveInitialButton() throws InterruptedException {
-		Thread.sleep(100);
-		clickReset();
-		clickAddButton();
-		clickAddButton();
-		clickAddButton();
-
-		int i = gui.initialListModel.getSize();
-
-		clickRemoveButton();
-
-		assertEquals(gui.initialListModel.getSize(), i - 1);
-		i--;
-
-		clickRemoveButton();
-		clickRemoveButton();
-
-		assertEquals(gui.initialListModel.getSize(), i - 2);
-
-		clickRemoveButton();
-
-		assertEquals(gui.initialListModel.getSize(), 3);
-		Thread.sleep(100);
 	}
 
 	/**
@@ -386,17 +302,24 @@ class ConfigurationAppGUITest {
 
 	@Disabled
 	@Test
-	public void testAddFinalButton() throws InterruptedException {
+	public void testAddButton() throws InterruptedException {
 		Thread.sleep(100);
 		int i = 0;
-		clickReset();
-		// add 2 files to final list
-		selectFile(0);
-		clickAddButton();
-		selectFile(1);
-		clickAddButton();
+		
+		if (hasSavedData()) {
+			
+		}
+		
+		else {
 
-		assertEquals(gui.finalListModel.getSize(), i + 2);
+			selectFile(4);
+			clickAddButton();
+			selectFile(5);
+			clickAddButton();
+			assertEquals(gui.finalListModel.getSize(), i + 2);
+			clickAddButton();
+		}
+		
 
 		// attempt to add same audio file to final list
 		clickAddButton();
@@ -427,7 +350,7 @@ class ConfigurationAppGUITest {
 
 	@Disabled
 	@Test
-	public void testRemoveFinalButton() throws InterruptedException {
+	public void testRemoveButton() throws InterruptedException {
 		Thread.sleep(100);
 		clickReset();
 
@@ -503,10 +426,6 @@ class ConfigurationAppGUITest {
 		gui.pauseBtn.doClick();
 	}
 
-	private void clickResume() {
-		gui.resumeBtn.doClick();
-	}
-
 	private void clickReset() {
 		gui.resetBtn.doClick();
 	}
@@ -524,11 +443,25 @@ class ConfigurationAppGUITest {
 	}
 
 	private void clickRemoveButton() {
-		gui.removeNewBtn.doClick();
+		gui.removeFinalBtn.doClick();
+	}
+
+	private void clickResume() {
+		gui.pauseBtn.doClick();
 	}
 
 	private boolean isPlaying() {
 		return gui.player.isPlaying();
+	}
+
+	private boolean hasSavedData() {
+		File sFile = new File("TalkBoxConfig.txt");
+		return sFile.exists();
+	}
+	
+	private void deleteSaved() {
+		File sFile = new File("TalkBoxConfig.txt");
+		sFile.delete();
 	}
 
 }

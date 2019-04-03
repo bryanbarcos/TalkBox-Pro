@@ -35,12 +35,14 @@ public class ConfigurationAppGUI extends JFrame
     //private static final String AUDIO_DIR = new File("/Sounds").toURI().relativize(new File("X:/York 2/EECS2311/TalkBox-Pro/Sounds").toURI()).getPath();
     private static final String fileName = "TalkBoxConfig.txt";
     
+
+    
     public JList audioList;
     private JSlider slider;
     private JLabel infoLabel;
     public SoundEngine player;
-    private JList initialList;
-    private JList finalList;
+    public JList initialList;
+    public JList finalList;
     private JComboBox <Integer> order;
     public DefaultListModel initialListModel;
     public DefaultListModel finalListModel;
@@ -49,6 +51,12 @@ public class ConfigurationAppGUI extends JFrame
     private DefaultComboBoxModel orderModel;
     Component[] comp;
     int c = 0;
+    
+    public int reply;
+    
+    public final int YES = JOptionPane.YES_OPTION;
+	public final int NO = JOptionPane.NO_OPTION;
+	public int yesOrNo;
 
     public JButton playBtn;
     public JButton stopBtn;
@@ -215,9 +223,11 @@ public class ConfigurationAppGUI extends JFrame
             }
         }
         else {
-
-        	JOptionPane.showMessageDialog(null, "Error: " + dirName + " must be a directory");
-    		return null;
+        	if (isJUnitTest() == false) {
+        		JOptionPane.showMessageDialog(null, "Error: " + dirName + " must be a directory");
+        		return null;
+        		}
+        	return null;
         	}
   
 
@@ -618,10 +628,20 @@ public class ConfigurationAppGUI extends JFrame
         	}
         }
         else {
-            int reply = JOptionPane.showConfirmDialog(null, "1. To add to the last " +
+        	if (isJUnitTest() == true) {
+        		if (yesOrNo == YES) {
+        			reply = YES;
+        		}
+        		else {
+        			reply = NO;
+        		}
+        	}
+        	if (isJUnitTest() == false) {
+            reply = JOptionPane.showConfirmDialog(null, "1. To add to the last " +
                             "position.(Select Yes)\n2. To add to the selected button number from it's drop down " +
                             "menu if you have selected.(Select No)\n3.To Exit.(Select Cancel)",
                     "Add Button.", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        	}
             String filename = (String)audioList.getSelectedValue();
             if(orderModel.getSize() < audioFiles.length) {
                 if (finalListModel.contains(filename))
@@ -653,6 +673,8 @@ public class ConfigurationAppGUI extends JFrame
                         "number of available buttons, please add a new button, then try.");
         }
     }
+
+    
 
     private void removeFinalBtn() {
         if (finalListModel.size() <= 0)
@@ -695,23 +717,26 @@ public class ConfigurationAppGUI extends JFrame
 
     //Added the reset button functionality to reset the initial list and final list
     public void reset(String[] audioFiles) {
-        finalListModel.removeAllElements();
-        //initialListModel.removeAllElements();
-        order.removeAllItems();
-        for(int i = 1; i <= orderButtons.length; i++) {
-            //initialListModel.addElement(audioFiles[i - 1]);
-            finalListModel.addElement(audioFiles[i - 1]);
-            orderModel.addElement(i);
+        if (initialListModel.size() > 0) {
+        	finalListModel.removeAllElements();
+            //initialListModel.removeAllElements();
+        	order.removeAllItems();
+        	for(int i = 0; i < initialListModel.getSize(); i++) {
+        		//initialListModel.addElement(audioFiles[i]);
+        		finalListModel.addElement(initialListModel.getElementAt(i));
+        		//orderModel.addElement(i);
+        		order.addItem(i + 1);
+        	}
         }
     }
 
     //Added functionality to save changes.
     public void saveChanges() {
-        if(finalListModel.isEmpty() || finalListModel.size() < orderButtons.length) {
+        if((finalListModel.isEmpty() || finalListModel.size() < orderButtons.length) && isJUnitTest() == false) {
             JOptionPane.showMessageDialog(null, "The list cannot be empty, there should " +
                     "be at least " + orderButtons.length + " buttons.");
         }
-        else if((finalListModel.toString()).equals(initialListModel.toString())) {
+        else if((finalListModel.toString()).equals(initialListModel.toString()) && isJUnitTest() == false) {
             JOptionPane.showMessageDialog(null, "Sorry, make different selections as " +
                     "both final and initial list are same.");
         }
@@ -722,8 +747,10 @@ public class ConfigurationAppGUI extends JFrame
                 initialListModel.addElement(finalListModel.getElementAt(i));
             }
             leftScrollPane.setVisible(true);
-            JOptionPane.showMessageDialog(null, "Great!!!\nYour Changes have been made in " +
+            if (isJUnitTest() == false) {
+            	JOptionPane.showMessageDialog(null, "Great!!!\nYour Changes have been made in " +
                     "Simulator App. \nEnjoy!");
+            }
         }
     }
 

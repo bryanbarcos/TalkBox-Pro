@@ -103,3 +103,10 @@ Wed Apr 03 13:46:02 EDT 2019: The 'Remove Audio File Button' for the Final Audio
 Wed Apr 03 13:46:05 EDT 2019: The 'Add Audio File Button' for the Final Audio List was pressed
 Wed Apr 03 13:46:09 EDT 2019: The 'Add Audio File Button' for the Final Audio List was pressed
 Wed Apr 03 13:46:13 EDT 2019: The 'Save Changes Button' was pressed
+Wed Apr 03 14:20:26 EDT 2019: The 'Simulator App' was pressed
+Wed Apr 03 14:20:29 EDT 2019: The 'Save Changes Button' was pressed
+Wed Apr 03 14:20:30 EDT 2019: The 'Simulator App' was pressed
+Wed Apr 03 14:33:14 EDT 2019: The 'Simulator App' was pressed
+Wed Apr 03 14:33:18 EDT 2019: The 'Save Changes Button' was pressed
+Wed Apr 03 14:33:22 EDT 2019: The 'Simulator App' was pressed
+Wed Apr 03 14:33:22 EDT 2019: The 'Simulator App' was pressed

@@ -32,12 +32,11 @@ public class TBCLogFrame extends JFrame{
 		frame.setLayout(new BorderLayout());
 		frame.setSize(WIDTH, HEIGTH);
 		frame.setMaximumSize(new Dimension(WIDTH, HEIGTH));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		this.createScrollPanel();
 		frame.setVisible(true);
-		
 	}
 	
 	private void createScrollPanel() {

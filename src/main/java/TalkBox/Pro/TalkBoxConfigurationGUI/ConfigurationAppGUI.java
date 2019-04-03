@@ -1,5 +1,6 @@
 package main.java.TalkBox.Pro.TalkBoxConfigurationGUI;
 
+import main.java.TalkBox.Pro.TBCLog.TBCLogFrame;
 import main.java.TalkBox.Pro.simulatorGUI.SimulatorApp;
 
 import javax.swing.*;
@@ -67,6 +68,7 @@ public class ConfigurationAppGUI extends JFrame
     JScrollPane rightScrollPane;
     JScrollPane leftScrollPane;
     public SimulatorApp myFrame;
+    public TBCLogFrame logApp;
     File savedConfig = new File(fileName);
     File sounds = new File(AUDIO_DIR);
 
@@ -386,8 +388,16 @@ public class ConfigurationAppGUI extends JFrame
                 launchSimApp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(launchSimApp);
                 
-                launchLogApp = new JButton();
                 
+                launchLogApp = new JButton("TBCLogApp");
+                launchLogApp.setToolTipText("TBC Log Application");
+                launchLogApp.addActionListener(e ->{
+                	logApp = new TBCLogFrame();
+                	logApp.setVisible(true);
+                	logApp.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                });
+                launchLogApp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                orderPanel.add(launchLogApp);
             }
             rightPane.setLayout(new BorderLayout(8, 8));
             rightPane.add(orderPanel, BorderLayout.CENTER);

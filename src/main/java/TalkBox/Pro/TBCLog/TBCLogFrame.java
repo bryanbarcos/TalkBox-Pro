@@ -46,5 +46,7 @@ public class TBCLogFrame extends JFrame{
 		frame.add(scrollPane);
 	}
 	
-	//private void create
+	public static void main(String args[]) {
+		new TBCLogFrame();
+	}
 }

@@ -1,5 +1,7 @@
 package main.java.TalkBox.Pro.TBCLog;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -13,6 +15,7 @@ public class ScrollPaneClass extends JPanel{
 	private TextReader textReader;
 	
 	public ScrollPaneClass() {
+		this.setLayout(new BorderLayout());
 		createScrollPane();
 		this.add(scrollPane);
 	}

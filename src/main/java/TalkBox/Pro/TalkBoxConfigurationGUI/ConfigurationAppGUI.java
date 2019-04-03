@@ -63,6 +63,7 @@ public class ConfigurationAppGUI extends JFrame
     public JButton removeNewBtn;
     public JButton removeFinalBtn;
     public JButton launchSimApp;
+    public JButton launchLogApp;
     JScrollPane rightScrollPane;
     JScrollPane leftScrollPane;
     public SimulatorApp myFrame;
@@ -384,6 +385,9 @@ public class ConfigurationAppGUI extends JFrame
                 });
                 launchSimApp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(launchSimApp);
+                
+                launchLogApp = new JButton();
+                
             }
             rightPane.setLayout(new BorderLayout(8, 8));
             rightPane.add(orderPanel, BorderLayout.CENTER);
@@ -489,22 +493,33 @@ public class ConfigurationAppGUI extends JFrame
                     setButtonIcon(pauseBtn, resumeIcn);
                     pauseBtn.setToolTipText("Resume");
                     pause();
+                    
+                    WriteFile data = new WriteFile("Logger.txt", true);
+                    try {
+                    	Date now = new Date();
+            			data.writeToFile(now + ": The 'Pause Button' was pressed");
+            		} catch (IOException j) {
+            			// TODO Auto-generated catch block
+            			j.printStackTrace();
+            		}
                 }
                 else {
                     setButtonIcon(pauseBtn, pauseIcn);
                     pauseBtn.setToolTipText("Pause");
                     resume();
+                    
+                    WriteFile data = new WriteFile("Logger.txt", true);
+                    try {
+                    	Date now = new Date();
+            			data.writeToFile(now + ": The 'Resume Button' was pressed");
+            		} catch (IOException j) {
+            			// TODO Auto-generated catch block
+            			j.printStackTrace();
+            		}
                 }
                 isPaused[0] = !isPaused[0];
                 
-                WriteFile data = new WriteFile("Logger.txt", true);
-                try {
-                	Date now = new Date();
-        			data.writeToFile(now + ": The 'Pause Button' was pressed");
-        		} catch (IOException j) {
-        			// TODO Auto-generated catch block
-        			j.printStackTrace();
-        		}
+                
                 });
             pauseBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(pauseBtn);

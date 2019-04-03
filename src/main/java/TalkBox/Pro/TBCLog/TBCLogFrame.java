@@ -1,6 +1,7 @@
 package main.java.TalkBox.Pro.TBCLog;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
@@ -14,8 +15,8 @@ public class TBCLogFrame extends JFrame{
 	private JFrame frame;
 	
 	private String title;
-	public final int WIDTH = 500; 
-	public final int HEIGTH = 500;
+	public final int WIDTH = 700; 
+	public final int HEIGTH = 700;
 	
 	//private ButtonsClass btns;
 	private ScrollPaneClass scrollPane;
@@ -27,29 +28,22 @@ public class TBCLogFrame extends JFrame{
 	
 	private void createWindow() {
 		frame = new JFrame(title);
+		
 		frame.setLayout(new BorderLayout());
 		frame.setSize(WIDTH, HEIGTH);
+		frame.setMaximumSize(new Dimension(WIDTH, HEIGTH));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(true);
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		this.createScrollPanel();
 		frame.setVisible(true);
-		frame.pack();
 		
-		/*this.createButtonsPanel();*/
-		//this.createScrollPanel();
 	}
-	
-	/*private void createButtonsPanel() {
-		btns = new ButtonsClass();
-		btns.setVisible(true);
-		frame.add(btns, BorderLayout.NORTH);
-	}*/
 	
 	private void createScrollPanel() {
 		scrollPane = new ScrollPaneClass();
 		scrollPane.setVisible(true);
-		frame.add(scrollPane, BorderLayout.CENTER);
+		frame.add(scrollPane);
 	}
 	
 	//private void create

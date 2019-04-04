@@ -139,7 +139,7 @@ public class SoundEngine
      *
      * @return  True if successful, false if the file could not be decoded.
      */
-    private boolean loadSound(File file)
+    boolean loadSound(File file)
     {
         currentSoundDuration = 0;
 

@@ -34,23 +34,30 @@ public class ConfigurationAppGUI extends JFrame
 {
     private static final String VERSION = "Version 1.0";
     private static final String AUDIO_DIR = Paths.get("Sounds").toString();
-    //private static final String AUDIO_DIR = new File("/Sounds").toURI().relativize(new File("X:/York 2/EECS2311/TalkBox-Pro/Sounds").toURI()).getPath();
     private static final String fileName = "TalkBoxConfig.txt";
+    
 
+    
     public JList audioList;
     private JSlider slider;
     private JLabel infoLabel;
-    private SoundEngine player;
-    private JList initialList;
-    private JList finalList;
+    public SoundEngine player;
+    public JList initialList;
+    public JList finalList;
     private JComboBox <Integer> order;
     public DefaultListModel initialListModel;
     public DefaultListModel finalListModel;
-    private DefaultListModel audioListModel;
+    public DefaultListModel audioListModel;
     public Integer[] orderButtons = {1, 2, 3};
     private DefaultComboBoxModel orderModel;
     Component[] comp;
     int c = 0;
+    
+    public int reply;
+    
+    public final int YES = JOptionPane.YES_OPTION;
+	public final int NO = JOptionPane.NO_OPTION;
+	public int yesOrNo;
 
     public JButton playBtn;
     public JButton stopBtn;
@@ -75,6 +82,17 @@ public class ConfigurationAppGUI extends JFrame
 
     //Main method for starting the player from a command line.
     public static void main(String[] args){ ConfigurationAppGUI gui = new ConfigurationAppGUI(); }
+    
+    public static boolean isJUnitTest() {
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        List<StackTraceElement> list = Arrays.asList(stackTrace);
+        for (StackTraceElement element : list) {
+            if (element.getClassName().startsWith("org.junit.")) {
+                return true;
+            }           
+        }
+        return false;
+    }
 
     //Create a TalkBox and display its GUI on screen.
     public ConfigurationAppGUI() {
@@ -106,6 +124,11 @@ public class ConfigurationAppGUI extends JFrame
                         orderModel.addElement(data.order.getModel().getElementAt(i));
                 }
             }
+            
+            
+            
+          //DOUBLE CHECK THIS FOR TESTING
+            
             else {
                 JOptionPane.showMessageDialog(null, "Sorry the Sounds directory does not exist" +
                         " or it is not a directory or it is empty.\n" +
@@ -138,8 +161,11 @@ public class ConfigurationAppGUI extends JFrame
 
         String filename = (String)audioList.getSelectedValue();
         if(filename == null) {  // nothing selected
+        	if (isJUnitTest() == false) {
             JOptionPane.showMessageDialog(null, "Please select a file from Audio Files to play.");
             return;
+        	}
+        	return;
         }
         slider.setValue(0);
         boolean successful = player.play(new File(AUDIO_DIR, filename));
@@ -200,9 +226,14 @@ public class ConfigurationAppGUI extends JFrame
             }
         }
         else {
-            JOptionPane.showMessageDialog(null, "Error: " + dirName + " must be a directory");
-            return null;
-        }
+        	if (isJUnitTest() == false) {
+        		JOptionPane.showMessageDialog(null, "Error: " + dirName + " must be a directory");
+        		return null;
+        		}
+        	return null;
+        	}
+  
+
     }
 
     // ------- ChangeListener interface (for Slider) -------
@@ -237,8 +268,7 @@ public class ConfigurationAppGUI extends JFrame
      * @param audioFiles The file names to display.
      */
     private void makeFrame(String[] audioFiles) {
-        // the following makes sure that our application exits when
-        // the user closes its window
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JPanel contentPane = (JPanel) getContentPane();
@@ -271,7 +301,6 @@ public class ConfigurationAppGUI extends JFrame
             JScrollPane scrollPane = new JScrollPane(audioList);
             scrollPane.setColumnHeaderView(new JLabel("Audio files"));
             leftPane.add(scrollPane, BorderLayout.CENTER);
-            //leftPane.setBackground(Color.BLACK);
         }
         contentPane.add(leftPane, BorderLayout.CENTER);
 
@@ -340,28 +369,7 @@ public class ConfigurationAppGUI extends JFrame
                 removeFinalBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 orderPanel.add(removeFinalBtn);
 
-                //Add Record Button to record new audio files.
-//                final Boolean[] isRecord = {false};
-//                JButton recordBtn = new JButton();
-//                ImageIcon recordIcn = new ImageIcon("Icons/Record.png");
-//                setButtonIcon(recordBtn, recordIcn);
-//                recordBtn.setToolTipText("Start Recording");
-//                recordBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                recordBtn.addActionListener(e -> {
-//                    if(!isRecord[0]) {
-//                        ImageIcon stopRcdIcn = new ImageIcon("Icons/Stop.png");
-//                        setButtonIcon(recordBtn, stopRcdIcn);
-//                        recordBtn.setToolTipText("Stop Recording");
-//                        stopRecording();
-//                    }
-//                    else {
-//                        setButtonIcon(recordBtn, recordIcn);
-//                        recordBtn.setToolTipText("Start Recording");
-//                        startRecording();
-//                    }
-//                    isRecord[0] = !isRecord[0];
-//                });
-//                orderPanel.add(recordBtn);
+
                 // Add button to launch Simulator App
                 launchSimApp = new JButton();
                 ImageIcon launchIcn = new ImageIcon("Icons/Launch.png");
@@ -374,7 +382,9 @@ public class ConfigurationAppGUI extends JFrame
                         myFrame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                     }
                     else {
-                        JOptionPane.showMessageDialog(null, "Please try to save before launching simulator app");
+                    	if (isJUnitTest() == false) {
+                    		JOptionPane.showMessageDialog(null, "Please try to save before launching simulator app");
+                    	}  
                     }
                     WriteFile data = new WriteFile("Logger.txt", true);
                     try {
@@ -401,16 +411,7 @@ public class ConfigurationAppGUI extends JFrame
             }
             rightPane.setLayout(new BorderLayout(8, 8));
             rightPane.add(orderPanel, BorderLayout.CENTER);
-//            initialListModel = new DefaultListModel();
-//            initialList = new JList(initialListModel);
-            // Create the scrolled list for Initial List
-//            if(initialListModel == null)
-//            {
-//                initialListModel = new DefaultListModel();
-//                initialList = new JList(initialListModel);
-//                for (int i = 0; i < order.getItemCount(); i++)
-//                    initialListModel.addElement(audioFiles[i]);
-//            }
+
             setBackground(initialList);
             initialList.setPrototypeCellValue("XXXXXXXXXXXXXXXXXXX");
             leftScrollPane = new JScrollPane(initialList);
@@ -434,13 +435,9 @@ public class ConfigurationAppGUI extends JFrame
             finalList.setPrototypeCellValue("XXXXXXXXXXXXXXXXXXXX");
             rightScrollPane = new JScrollPane(finalList);
 
-            //Add all elements from initial list to final list when app is started.
-//            for (int i=0; i<initialListModel.getSize(); i++)
-//                finalListModel.addElement(initialListModel.elementAt(i));
 
             rightScrollPane.setColumnHeaderView(new JLabel("Changes you Want"));
             rightPane.add(rightScrollPane, BorderLayout.EAST);
-            //rightPane.setBackground(Color.BLACK);
         }
         contentPane.add(rightPane, BorderLayout.SOUTH);
 
@@ -612,11 +609,9 @@ public class ConfigurationAppGUI extends JFrame
             });
             saveChangesBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             toolbar.add(saveChangesBtn);
-            //toolbar.setBackground(Color.BLACK);
         }
 
         contentPane.add(toolbar, BorderLayout.NORTH);
-        //contentPane.setBackground(Color.black);
 
         // building is done - arrange the components
         pack();
@@ -625,7 +620,7 @@ public class ConfigurationAppGUI extends JFrame
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(d.width/2 - getWidth()/2, d.height/2 - getHeight()/2);
         setVisible(true);
-        if(!savedConfig.exists()) {
+        if(!savedConfig.exists() && isJUnitTest() == false) {
             tutorial();
         }
     }
@@ -720,7 +715,6 @@ public class ConfigurationAppGUI extends JFrame
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             source = fileChooser.getSelectedFile();
-            //System.out.println("Selected file: " + source.getName());
         }
         return source;
     }
@@ -743,17 +737,32 @@ public class ConfigurationAppGUI extends JFrame
     //Added the edit button functionality to add audio files to final list.
     private void addFinalBtn(String[] audioFiles) {
         if(audioList.isSelectionEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please select an audio from audio list");
+        	if (isJUnitTest() == false) {
+        		JOptionPane.showMessageDialog(null, "Please select an audio from audio list");
+        	}
         }
         else {
-            int reply = JOptionPane.showConfirmDialog(null, "1. To add to the last " +
+        	if (isJUnitTest() == true) {
+        		if (yesOrNo == YES) {
+        			reply = YES;
+        		}
+        		else {
+        			reply = NO;
+        		}
+        	}
+        	if (isJUnitTest() == false) {
+            reply = JOptionPane.showConfirmDialog(null, "1. To add to the last " +
                             "position.(Select Yes)\n2. To add to the selected button number from it's drop down " +
                             "menu if you have selected.(Select No)\n3.To Exit.(Select Cancel)",
                     "Add Button.", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        	}
             String filename = (String)audioList.getSelectedValue();
             if(orderModel.getSize() < audioFiles.length) {
-                if (finalListModel.contains(filename))
-                    JOptionPane.showMessageDialog(null, "Sorry the item already exists.");
+                if (finalListModel.contains(filename)) {
+                	if (isJUnitTest() == false) {
+                		JOptionPane.showMessageDialog(null, "Sorry the item already exists.");
+                	}
+                }
                 else {
                     if(finalListModel.size() >= orderButtons.length)
                         orderModel.addElement(order.getItemCount() + 1);
@@ -767,31 +776,30 @@ public class ConfigurationAppGUI extends JFrame
                     }
                 }
             }
-//            if (finalListModel.size() < order.getItemCount())
-//                if(finalListModel.size() < order.getSelectedIndex())
-//                    JOptionPane.showMessageDialog(null, "Sorry, try to pick the previous buttons first");
-//                else {
-//                    if (finalListModel.contains(filename))
-//                        JOptionPane.showMessageDialog(null, "Sorry the item already exists");
-//                    else
-//                        finalListModel.add(order.getSelectedIndex(), filename);
-//                }
+
             else
                 JOptionPane.showMessageDialog(null, "Sorry you have exceeded the " +
                         "number of available buttons, please add a new button, then try.");
         }
     }
 
+    
+
     private void removeFinalBtn() {
-        if (finalListModel.size() <= 0)
-            JOptionPane.showMessageDialog(null, "Cannot remove more buttons.");
+        if (finalListModel.size() <= 0) {
+        	if (isJUnitTest() == false) {
+            	JOptionPane.showMessageDialog(null, "Cannot remove more buttons.");
+        	}
+        }
         else
-            if(finalListModel.size() <= order.getSelectedIndex())
+            if(finalListModel.size() <= order.getSelectedIndex()) {
                 JOptionPane.showMessageDialog(null, "Sorry, try to pick the previous buttons first.");
+            }
             else {
                 finalListModel.remove(order.getSelectedIndex());
-                if(finalListModel.size() >= orderButtons.length )
+                if(finalListModel.size() >= orderButtons.length ) {
                     orderModel.removeElementAt(order.getItemCount() - 1);
+                }
             }
     }
 
@@ -806,7 +814,6 @@ public class ConfigurationAppGUI extends JFrame
             index = audioListModel.indexOf(finalListModel.lastElement());
 
         int length = order.getItemCount();
-        //initialListModel.removeAllElements();
         finalListModel.removeAllElements();
         for(int i = 1; i <= length; i++) {
             int c = ++index;
@@ -823,23 +830,23 @@ public class ConfigurationAppGUI extends JFrame
 
     //Added the reset button functionality to reset the initial list and final list
     public void reset(String[] audioFiles) {
-        finalListModel.removeAllElements();
-        //initialListModel.removeAllElements();
-        order.removeAllItems();
-        for(int i = 1; i <= orderButtons.length; i++) {
-            //initialListModel.addElement(audioFiles[i - 1]);
-            finalListModel.addElement(audioFiles[i - 1]);
-            orderModel.addElement(i);
+        if (initialListModel.size() > 0) {
+        	finalListModel.removeAllElements();
+        	order.removeAllItems();
+        	for(int i = 0; i < initialListModel.getSize(); i++) {
+        		finalListModel.addElement(initialListModel.getElementAt(i));
+        		order.addItem(i + 1);
+        	}
         }
     }
 
     //Added functionality to save changes.
     public void saveChanges() {
-        if(finalListModel.isEmpty() || finalListModel.size() < orderButtons.length) {
+        if((finalListModel.isEmpty() || finalListModel.size() < orderButtons.length) && isJUnitTest() == false) {
             JOptionPane.showMessageDialog(null, "The list cannot be empty, there should " +
                     "be at least " + orderButtons.length + " buttons.");
         }
-        else if((finalListModel.toString()).equals(initialListModel.toString())) {
+        else if((finalListModel.toString()).equals(initialListModel.toString()) && isJUnitTest() == false) {
             JOptionPane.showMessageDialog(null, "Sorry, make different selections as " +
                     "both final and initial list are same.");
         }
@@ -850,8 +857,10 @@ public class ConfigurationAppGUI extends JFrame
                 initialListModel.addElement(finalListModel.getElementAt(i));
             }
             leftScrollPane.setVisible(true);
-            JOptionPane.showMessageDialog(null, "Great!!!\nYour Changes have been made in " +
+            if (isJUnitTest() == false) {
+            	JOptionPane.showMessageDialog(null, "Great!!!\nYour Changes have been made in " +
                     "Simulator App. \nEnjoy!");
+            }
         }
     }
 
@@ -879,7 +888,7 @@ public class ConfigurationAppGUI extends JFrame
         }
     }
 
-    private  void tutorial()
+    public void tutorial()
     {
         String[] buttons = { "OK", "SKIP"};
         String[] tutorialText = {"Welcome to TalkBox Configuration App!, A short tutorial for you" +
@@ -909,6 +918,7 @@ public class ConfigurationAppGUI extends JFrame
                 , "For more info about buttons, just keep " +
                 "the cursor on the button for 3-5 seconds."
         };
+    	
 
         String[] tutorialTitle = {"Welcome To TalkBox"
                 , "Tutorial: Top Row"
@@ -934,20 +944,9 @@ public class ConfigurationAppGUI extends JFrame
             }
         }
     }
-
-    //Method to start recording
-    private void startRecording() {
-
-    }
-
-    //Method to stop recording
-    private void stopRecording() {
-
-    }
-
+    	
     //Method to set the Button Icon
     private void setButtonIcon(JButton button, ImageIcon myIcon1) {
-        //button.setBackground(Color.black);
         button.setBorderPainted(false);
         button.setBorder(null);
         button.setFocusable(false);
@@ -960,7 +959,6 @@ public class ConfigurationAppGUI extends JFrame
     @Override
     public int getNumberOfAudioButtons() {
         int audioButtonCount = order.getItemCount();
-        //System.out.println(audioButtonCount);
         return audioButtonCount;
     }
 
@@ -969,7 +967,6 @@ public class ConfigurationAppGUI extends JFrame
         int audioSetsCount = audioListModel.size() / order.getItemCount();
         if(audioListModel.size() % this.getNumberOfAudioButtons() != 0)
             audioSetsCount++;
-        //System.out.println(audioSetsCount);
         return audioSetsCount;
     }
 
@@ -994,7 +991,6 @@ public class ConfigurationAppGUI extends JFrame
     @Override
     public Path getRelativePathToAudioFiles() {
         Path path1 = Paths.get(".\\Sounds");
-        //System.out.println(path1);
         return path1;
     }
 
@@ -1016,63 +1012,8 @@ public class ConfigurationAppGUI extends JFrame
                     }
                 }
             }
-        //System.out.println(Arrays.deepToString(audioFileNames).replace("], ", "]\n"));
         return audioFileNames;
     }
 }
 
-//After orderModel is added.
-//                JLabel initialLabel = new JLabel("Initial List: ");
-//                initialLabel.setFont(font);
-//                orderPanel.add(initialLabel);
-//
-//                //Add button to add new button in simulator app.
-//                addNewBtn = new JButton();
-//                ImageIcon addNewIcn = new ImageIcon("Icons/Add.png");
-//                setButtonIcon(addNewBtn, addNewIcn);
-//                addNewBtn.setToolTipText("Add New Button");
-//                addNewBtn.addActionListener(e -> addInitialBtn(audioFiles));
-//                addNewBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                orderPanel.add(addNewBtn);
-//
-//                //Add remove button to new remove the last button created in simulator app.
-//                removeNewBtn = new JButton();
-//                ImageIcon removeIcn = new ImageIcon("Icons/Remove.png");
-//                setButtonIcon(removeNewBtn, removeIcn);
-//                removeNewBtn.setToolTipText("Remove from Initial List");
-//                removeNewBtn.addActionListener(e -> removeInitialBtn());
-//                removeNewBtn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//                orderPanel.add(removeNewBtn);
-//                  orderPanel.setBackground(Color.BLACK);
-//Added functionality to add button to add new button to simulator app.
-//    private void addInitialBtn(String[] audioFiles) {
-//        int index = audioListModel.indexOf(initialListModel.lastElement());
-//        if(orderModel.getSize() < audioFiles.length) {
-//            orderModel.addElement(order.getItemCount() + 1);
-//            if(++index == audioListModel.size()) {
-//                index = 0;
-//                initialListModel.addElement(audioFiles[index++]);
-//            }
-//            else
-//                initialListModel.addElement(audioFiles[index++]);
-//        }
-//        else
-//            JOptionPane.showMessageDialog(null, "Sorry you can't add more buttons");
-//    }
 
-//Added functionality to remove button to remove the last created button in simulator app.
-//    private void removeInitialBtn() {
-//        if(order.getItemCount() > orderButtons.length) {
-//            if(finalListModel.size() == initialListModel.size() || finalListModel.size() >= initialListModel.size()) {
-//                finalListModel.removeElementAt(order.getItemCount() - 1);
-//                orderModel.removeElementAt(order.getItemCount() - 1);
-//                initialListModel.removeElementAt(order.getItemCount());
-//            }
-//            else {
-//                orderModel.removeElementAt(order.getItemCount() - 1);
-//                initialListModel.removeElementAt(order.getItemCount());
-//            }
-//        }
-//        else
-//            JOptionPane.showMessageDialog(null, "Sorry, you can't remove more buttons");
-//    }

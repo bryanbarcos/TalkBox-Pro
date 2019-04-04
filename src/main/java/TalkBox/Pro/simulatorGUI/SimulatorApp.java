@@ -84,6 +84,7 @@ public class SimulatorApp extends JFrame
 			int k = i;
 			audioButtons[i].addActionListener(e -> {
 				String filename = audioButtons[k].getText();
+				player.loadSound(new File(AUDIO_DIR, filename));
 				player.play(new File(AUDIO_DIR, filename));
 			});
 			audio.add(audioButtons[i]);

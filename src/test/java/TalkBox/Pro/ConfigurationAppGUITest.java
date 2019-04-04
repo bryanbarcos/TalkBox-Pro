@@ -4,6 +4,8 @@ import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+
+
 import java.io.File;
 import java.lang.String;
 import javax.swing.DefaultListModel;
@@ -35,7 +37,6 @@ class ConfigurationAppGUITest {
 	 * if the method returns the correct files when a suffix is passed.
 	 */
 
-	@Disabled
 	@Test
 	public void testFindFiles() {
 		int i = 0;
@@ -62,12 +63,9 @@ class ConfigurationAppGUITest {
 		String[] files = ConfigurationAppGUI.findFiles("Sounds", "wav");
 		String[] allFiles2 = ConfigurationAppGUI.findFiles("Sounds", null);
 
-		// Test if method correctly find only .wav files and all files respectively
 
 		assertArrayEquals(files, wavFiles);
 		assertArrayEquals(allFiles, allFiles2);
-
-		// assert method returns null when an incorrect directory is entered
 
 		assertNull(ConfigurationAppGUI.findFiles("Not a Directory", "wav"));
 
@@ -79,7 +77,6 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testClickPlayButton() throws InterruptedException {
 		Thread.sleep(1000);
@@ -102,7 +99,6 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testClickStopButton() throws InterruptedException {
 		Thread.sleep(1000);
@@ -122,7 +118,6 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testClickPauseButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -144,7 +139,6 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testClickResumeButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -168,7 +162,6 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testClickResetButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -202,7 +195,6 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testClickSwapButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -247,7 +239,6 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testSaveChangesButton() throws InterruptedException {
 		Thread.sleep(100);
@@ -300,45 +291,32 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testAddButton() throws InterruptedException {
 		Thread.sleep(100);
+
 		int i = 0;
 		
-		if (hasSavedData()) {
+		int listSize = gui.finalListModel.getSize();
 			
-		}
-		
-		else {
+		for (int k = 0; k < listSize; k++) {
+			clickRemoveButton();
 
-			selectFile(4);
-			clickAddButton();
-			selectFile(5);
-			clickAddButton();
-			assertEquals(gui.finalListModel.getSize(), i + 2);
-			clickAddButton();
-		}
-		
-
-		// attempt to add same audio file to final list
-		clickAddButton();
-
-		if (gui.finalListModel.getSize() > i + 2) {
-			fail();
 		}
 
-		selectFile(2);
-		clickAddButton();
-		assertEquals(gui.finalListModel.getSize(), i + 3);
-
-		// attempt to add more files than there are buttons
 		selectFile(3);
 		clickAddButton();
 
-		if (gui.finalListModel.getSize() > gui.initialListModel.getSize()) {
-			fail();
-		}
+		Thread.sleep(100);
+		assertEquals(gui.finalListModel.getSize(), i + 1);
+		selectFile(4);
+		clickAddButton();
+
+		assertEquals(gui.finalListModel.getSize(), i + 2);
+		clickAddButton();
+		assertNotEquals(gui.finalListModel.getSize(), i + 3);
+
+		
 		Thread.sleep(100);
 	}
 
@@ -348,29 +326,29 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testRemoveButton() throws InterruptedException {
 		Thread.sleep(100);
-		clickReset();
 
-		// add 3 files to the final list
-		for (int i = 0; i < 3; i++) {
-			selectFile(i);
-			clickAddButton();
-		}
+		int listSize = gui.finalListModel.getSize();
 
-		int finalListSize = gui.finalListModel.getSize();
-
+		System.out.println(gui.finalListModel.getSize());
+		
 		clickRemoveButton();
-		assertEquals(gui.finalListModel.getSize(), finalListSize - 1);
+		Thread.sleep(100);
+		assertEquals(gui.finalListModel.getSize(), listSize - 1);
 
 		// remove two files and test size
-		finalListSize -= 1;
+		listSize -= 1;
 		clickRemoveButton();
 		clickRemoveButton();
-		assertEquals(gui.finalListModel.getSize(), finalListSize - 2);
+		assertEquals(gui.finalListModel.getSize(), listSize - 2);
 
+		int newListSize = gui.finalListModel.getSize();
+		for (int i = 0; i < newListSize; i++) {
+			clickRemoveButton();
+		}
+		
 		// attempt to remove files when list is empty
 		clickRemoveButton();
 		if (gui.finalListModel.getSize() < 0) {
@@ -385,22 +363,39 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Disabled
 	@Test
 	public void testLaunchSimulator() throws InterruptedException {
 		Thread.sleep(100);
-		clickReset();
-		clickLaunchSim();
-		Thread.sleep(100);
-		assertTrue(gui.myFrame.isActive());
-		assertTrue(gui.myFrame.isVisible());
-		assertEquals(gui.myFrame.getNumberOfAudioButtons(), 3);
-		assertEquals(gui.myFrame.getNumberOfAudioSets(), 4);
-		assertEquals(gui.myFrame.getTotalNumberOfButtons(), 12);
-		Thread.sleep(100);
+		
+		if (hasSavedData()) {
+			clickLaunchSim();
+			Thread.sleep(100);
+			assertTrue(gui.myFrame.isActive());
+			assertTrue(gui.myFrame.isVisible());		
+			Thread.sleep(100);
 
-		gui.myFrame.swapButtons[0].doClick();
-		gui.myFrame.audioButtons[0].doClick();
+			//gui.myFrame.swapButtons[0].doClick();
+	
+			gui.myFrame.audioButtons[0].doClick();
+			Thread.sleep(1000);
+		}
+		
+		else {
+			clickSave();
+			clickLaunchSim();
+			Thread.sleep(100);
+			assertTrue(gui.myFrame.isActive());
+			assertTrue(gui.myFrame.isVisible());
+			Thread.sleep(100);
+
+			//gui.myFrame.swapButtons[0].doClick();
+	
+			gui.myFrame.audioButtons[0].doClick();
+			Thread.sleep(1000);
+
+			deleteSaved();
+		}
+		
 
 		Thread.sleep(100);
 
@@ -462,6 +457,7 @@ class ConfigurationAppGUITest {
 	private void deleteSaved() {
 		File sFile = new File("TalkBoxConfig.txt");
 		sFile.delete();
+		sFile.deleteOnExit();
 	}
 
 }

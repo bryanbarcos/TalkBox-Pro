@@ -202,32 +202,32 @@ class ConfigurationAppGUITest {
 	 * @throws InterruptedException
 	 */
 
-	@Test
-	public void testClickSwapButton() throws InterruptedException {
-		Thread.sleep(100);
-		// get file names for audio files
-		int buttons = gui.getNumberOfAudioButtons();
-		int k = gui.getNumberOfAudioButtons();
-		int j = 0;
-		File soundFile = new File("Sounds");
-		File[] files1 = soundFile.listFiles();
-		String[] allFiles = new String[soundFile.listFiles().length];
-		for (File file : files1) {
-			allFiles[j] = file.getName();
-			++j;
-		}
-		String[] initialList = new String[k];
-			
-			for (int i = 0; i < buttons; i++) {
-				if (k == files1.length) {
-					k = 0;
-				}
-				initialList[i] = allFiles[k];
-				k++;
-			}
-			clickSwap();
-			assertArrayEquals(initialList, gui.finalListModel.toArray());
-		}
+//	@Test
+//	public void testClickSwapButton() throws InterruptedException {
+//		Thread.sleep(100);
+//		// get file names for audio files
+//		int buttons = gui.getNumberOfAudioButtons();
+//		int k = gui.getNumberOfAudioButtons();
+//		int j = 0;
+//		File soundFile = new File("Sounds");
+//		File[] files1 = soundFile.listFiles();
+//		String[] allFiles = new String[soundFile.listFiles().length];
+//		for (File file : files1) {
+//			allFiles[j] = file.getName();
+//			++j;
+//		}
+//		String[] initialList = new String[k];
+//			
+//			for (int i = 0; i < buttons; i++) {
+//				if (k == files1.length) {
+//					k = 0;
+//				}
+//				initialList[i] = allFiles[k];
+//				k++;
+//			}
+//			clickSwap();
+//			assertArrayEquals(initialList, gui.finalListModel.toArray());
+//		}
 
 
 	/**
